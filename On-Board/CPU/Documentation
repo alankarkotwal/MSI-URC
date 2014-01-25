@@ -1,0 +1,20 @@
+Documentation: This document lists the final Bash functions and wrappers that will be used in the Main script
+
+1) GPIO Module.
+	Contains wrappers to run the GPIO of the RaspberryPi.
+		Functions:
+		1) High: Sets a pin high.															Usage: High <PinNo>
+		2) Low: Sets a pin low.																Usage: Low <PinNo>
+		
+2) Serial Module.
+	Contains the script for Serial I/O.
+	This is run as a separate process on the OS. This process continuously takes data from the Serial Port. Upon signal from the Main script, it will print the
+	data to a file from which the data can be sourced. You communicate with this process by sending signals to it. Send it the MAIN_WANTS_DATA_SIGNAL signal to
+	extract data from it. Wait for the SERIAL_SCRIPT_READY_SIGNAL signal and then source SERIAL_DATA_FILE.
+	Syntax for sending signals: See Signals Module.
+
+3) Signals Module.
+	Wrappers to handle and send signals between processes.
+		Functions:
+		1) SendSignal: Send a signal with a given ID to a process with a given PID.			Usage: SendSignal SIGRTMIN+<SignalID> <PID>
+		2) WaitForSignal: Waits for a signal with a given ID.

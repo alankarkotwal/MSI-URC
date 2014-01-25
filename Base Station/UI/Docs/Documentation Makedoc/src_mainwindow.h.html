@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="description" content="mainwindow.h Function Source Code">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>mainwindow.h Source Code </title>
+<link rel="stylesheet" href="qt_style.css">
+</head>
+
+<body class=body_source>
+
+<h1 align=center>mainwindow.h</h1>
+<p>This is the verbatim text of the file <b>mainwindow.h</b>.</p>
+<hr>
+<pre>
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
+#include <QMainWindow>
+#include <QtWidgets>
+#include <QtSerialPort/QSerialPort>
+#include <QVector>
+#include "joystickobject.h"
+#include "map/qmapwidget.h"
+
+namespace Ui {
+class MainWindow;
+}
+class joystickObject;
+class SettingsDialog;
+class ImageCache;
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
+    void printTerminalString();
+    void initqmapwidget();
+public slots:
+    void joyEvent(bool BtnEv, unsigned int cAn);
+    void joystickFound(int n);
+    // GPS
+        void centerMapToSpot();
+        void followSpot();
+        //void editPreferences();
+protected:
+
+private slots:
+    void openSerialPort();
+    void closeSerialPort();
+    //void about();
+    void writeData(const QByteArray &data);
+    void readData();
+
+    void handleError(QSerialPort::SerialPortError error);
+    void resetAll();
+
+private:
+    void initActionsConnections();
+
+private:
+    Ui::MainWindow *ui;
+    QVector<QString> terminalString;
+    SettingsDialog *settings;
+    QSerialPort *serial;
+    joystickObject m_joy;
+
+    //GPS Map
+    ImageCache imageCache;
+    bool m_followspot;
+    QMapWidget* m_MapWidget;
+};
+
+#endif // MAINWINDOW_H
+
+</pre>
+</body>
+</html>
+
+
+

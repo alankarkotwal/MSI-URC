@@ -1,0 +1,130 @@
+fn { 
+  margin-left: 1cm; text-indent: -1cm; 
+}
+
+a:link {
+  color: #004faf; 
+  text-decoration: none;
+}
+
+a:visited { 
+  color: #672967;
+  text-decoration: none;
+}
+
+a:active { 
+  color: #672967; 
+}
+
+body { 
+  background: #ffffff; color: black; 
+}
+
+.body_doc { 
+  background: #ffffff; 
+  color: black; 
+}
+
+.body_source { 
+  background: #ffffff; 
+  color: black; 
+}
+
+.body_index { 
+  background: #ffffff; 
+  color: black; 
+}
+
+.index_class_table {
+  border: 0;
+  display: block;
+}
+
+.index_class_item {
+  display: block;
+}
+
+.index_secondary_class_item {
+  font-size: small;
+  display: block;
+}
+
+.index_class_item_letter {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: black;
+  display: block;
+}
+
+.index_secondary_class_item_letter {
+  font-size: small;
+  font-weight: bold;
+  display: block;
+}
+
+.func_name {
+}
+
+.func_qualifier_slot {
+  font-size: 0.9em;
+  font-weight: bold;
+  color: black;
+}
+
+.func_qualifier_visibility {
+  font-size: 0.9em;
+  font-weight: bold;
+  color: black;
+}
+
+.func_qualifier {
+  font-size: 0.9em;
+  font-weight: bold;
+  color: black;
+}
+
+.see {
+  display: block;
+  font-size: 0.9em;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 2em;
+}
+
+.eg {
+  display: block;
+  font-size: 1.02em;
+}
+
+.index_var {
+  display: block;
+}
+
+.index_var_name {
+  font-weight: bold;
+}
+
+.index_type {
+  display: block;
+}
+
+.index_inherit {
+  display: block;
+}
+
+.index_func {
+  display: block;
+}
+
+.index_func_arg {
+}
+
+.func_title {
+  display: block;
+  color: black;
+  font-size: 1.09em;
+  font-weight: bold;
+  margin-top: 1em;
+  margin-left: 0;
+  padding-bottom: 0;
+}

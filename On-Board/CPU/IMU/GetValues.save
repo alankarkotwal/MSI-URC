@@ -1,0 +1,8 @@
+#!/usr/bin/python
+
+from serial import *
+
+ser=Serial("/dev/ttyUSB0", 57600)
+
+while ser.read() is not '#':
+	pass

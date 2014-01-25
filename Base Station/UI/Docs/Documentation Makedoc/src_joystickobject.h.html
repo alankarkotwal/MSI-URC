@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="description" content="joystickobject.h Function Source Code">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>joystickobject.h Source Code </title>
+<link rel="stylesheet" href="qt_style.css">
+</head>
+
+<body class=body_source>
+
+<h1 align=center>joystickobject.h</h1>
+<p>This is the verbatim text of the file <b>joystickobject.h</b>.</p>
+<hr>
+<pre>
+#ifndef JOYSTICKOBJECT_H
+#define JOYSTICKOBJECT_H
+
+#include <QObject>
+#include <QTimer>
+#include <QTimerEvent>
+#include <gamepad/Gamepad.h>
+
+
+
+
+class joystickObject: public QObject
+{   Q_OBJECT
+public:
+    joystickObject();
+    QTimer timer;
+public slots:
+    void timerEvent();
+signals:
+    void joystickFound(int n);
+};
+
+
+#endif // JOYSTICKOBJECT_H
+
+</pre>
+</body>
+</html>
+
+
+

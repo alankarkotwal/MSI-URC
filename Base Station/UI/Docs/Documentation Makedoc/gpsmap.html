@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="description" content="GPSMap Class">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>GPSMap Class </title>
+<link rel="stylesheet" href="qt_style.css">
+</head>
+
+<body class=body_doc>
+
+<script language="JavaScript" src="makedoc.js"></script>
+
+<table width=100% cellspacing=2 cellpadding=2 border=0>
+<tr bgcolor="#E5E5E5">
+<td valign=center>
+<a href="universal-qt.html"><font color="#004FAE">Index</font></a> 
+</td>
+</tr></table>
+
+<h1 align=center>GPSMap Class Reference</h1>
+<p>        n/a        <a href="#class_desc">More...</a></p>
+<div align=left><p><tt>#include "<a href="src_gpsmap.h.html">GPSMap.h</a>"</tt></p></div>
+
+<hr><h2>Inherited Class(es)</h2><ul><li><divindex_inherit>public QScrollArea</div></li>
+</ul>
+
+<hr>
+<!-- begin_index -->
+
+<div class=table_member_index_title><h2>Public Functions</h2></div><ul><li><div class=index_func><a name="index|GPSMap__nil_QWidget*_"                              ><b>GPSMap&nbsp;</b></a>(&nbsp;QWidget&nbsp;*&nbsp;<font class=index_func_arg>parent&nbsp;</font>=&nbsp;0&nbsp;)&nbsp;</div></li><li><div class=index_func>void&nbsp;<a name="index|init__void_"                    ><b>init&nbsp;</b></a>(&nbsp;)&nbsp;</div></li><li><div class=index_func>bool&nbsp;<a name="index|openMap__bool_constQString&_"                                     ><b>openMap&nbsp;</b></a>(&nbsp;const&nbsp;QString&nbsp;&amp;&nbsp;<font class=index_func_arg>fileName&nbsp;</font>)&nbsp;</div></li><li><div class=index_func>void&nbsp;<a name="index|clearMap__void_"                        ><b>clearMap&nbsp;</b></a>(&nbsp;)&nbsp;</div></li><li><div class=index_func>void&nbsp;<a name="index|setPenColor__void_constQColor&_" href="#setPenColor__void_constQColor&_"><b>setPenColor&nbsp;</b></a>(&nbsp;const&nbsp;QColor&nbsp;&amp;&nbsp;<font class=index_func_arg>newColor&nbsp;</font>)&nbsp;</div></li><li><div class=index_func>void&nbsp;<a name="index|setPenWidth__void_int_"                               ><b>setPenWidth&nbsp;</b></a>(&nbsp;int&nbsp;<font class=index_func_arg>newWidth&nbsp;</font>)&nbsp;</div></li><li><div class=index_func>bool&nbsp;<a name="index|isModified__bool_"                          ><b>isModified&nbsp;</b></a>(&nbsp;)&nbsp;const&nbsp;<font class=func_qualifier>&nbsp;&nbsp;[&nbsp;&nbsp;inline&nbsp;&nbsp;]&nbsp;</font></div></li><li><div class=index_func>QColor&nbsp;<a name="index|penColor__QColor_"                          ><b>penColor&nbsp;</b></a>(&nbsp;)&nbsp;const&nbsp;<font class=func_qualifier>&nbsp;&nbsp;[&nbsp;&nbsp;inline&nbsp;&nbsp;]&nbsp;</font></div></li><li><div class=index_func>int&nbsp;<a name="index|penWidth__int_"                       ><b>penWidth&nbsp;</b></a>(&nbsp;)&nbsp;const&nbsp;<font class=func_qualifier>&nbsp;&nbsp;[&nbsp;&nbsp;inline&nbsp;&nbsp;]&nbsp;</font></div></li><li><div class=index_func>void&nbsp;<a name="index|drawLineTo__void_constQPoint&_" href="#drawLineTo__void_constQPoint&_"><b>drawLineTo&nbsp;</b></a>(&nbsp;const&nbsp;QPoint&nbsp;&amp;&nbsp;<font class=index_func_arg>endPoint&nbsp;</font>)&nbsp;</div></li></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class=table_member_index_title><h2>Public Variables</h2></div><ul><li><div class=index_var colspan=3>bool&nbsp;<font class=index_var_name>modified&nbsp;</font></div></li><li><div class=index_var colspan=3>int&nbsp;<font class=index_var_name>myPenWidth&nbsp;</font></div></li><li><div class=index_var colspan=3>int&nbsp;<font class=index_var_name>currentMap&nbsp;</font></div></li><li><div class=index_var colspan=3>bool&nbsp;<font class=index_var_name>drawPath&nbsp;</font></div></li><li><div class=index_var colspan=3>QColor&nbsp;<font class=index_var_name>myPenColor&nbsp;</font></div></li><li><div class=index_var colspan=3>QImage&nbsp;<font class=index_var_name>map&nbsp;</font></div></li><li><div class=index_var colspan=3>QPoint&nbsp;<font class=index_var_name>lastPoint&nbsp;</font></div></li><li><div class=index_var colspan=3>QPoint&nbsp;<font class=index_var_name>RoverGPSPos&nbsp;</font></div></li></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end_index -->
+
+<hr><a name="class_desc"></a><h2>Detailed Description</h2>
+<p> n/a</p>
+<hr>
+<h2>Functions Documentation</h2><div class=func_title>void&nbsp;<a name="setPenColor__void_constQColor&_">setPenColor&nbsp;</a>(&nbsp;const&nbsp;QColor&nbsp;&amp;&nbsp;<font class=index_func_arg>newColor&nbsp;</font>)&nbsp;</div><p> bool GPSMap::saveImage(const QString &fileName, const char *fileFormat) ! [3] //! [4] { QImage visibleImage = map; resizeImage(&visibleImage, size());</p><p> if (visibleImage.save(fileName, fileFormat)) { modified = false; return true; } else { return false; } }</p><p>See also:<div class=see><a href="#index|setPenColor__void_constQColor&_">Back to index</a></div></p><div class=func_title>void&nbsp;<a name="paintEvent__void_QPaintEvent*_">paintEvent&nbsp;</a>(&nbsp;QPaintEvent&nbsp;*&nbsp;<font class=index_func_arg>event&nbsp;</font>)&nbsp;<font class=func_qualifier_visibility>&nbsp;&nbsp;[&nbsp;&nbsp;protected&nbsp;&nbsp;]&nbsp;</font></div><p> void GPSMap::mouseMoveEvent(QMouseEvent *<em>event</em>) { if ((<em>event</em>->buttons() & Qt::LeftButton) && scribbling) drawLineTo(<em>event</em>->pos()); }</p><p> void GPSMap::mouseReleaseEvent(QMouseEvent *<em>event</em>) { if (<em>event</em>->button() == Qt::LeftButton && scribbling) { drawLineTo(<em>event</em>->pos()); scribbling = false; } }</p><p>See also:<div class=see><a href="#index|paintEvent__void_QPaintEvent*_">Back to index</a></div></p><div class=func_title>void&nbsp;<a name="drawLineTo__void_constQPoint&_">drawLineTo&nbsp;</a>(&nbsp;const&nbsp;QPoint&nbsp;&amp;&nbsp;<font class=index_func_arg>endPoint&nbsp;</font>)&nbsp;</div><p> void GPSMap::resizeEvent(QResizeEvent *event) { if (width() > map.width() || height() > map.height()) { int newWidth = qMax(width() + 128, map.width()); int newHeight = qMax(height() + 128, map.height()); resizeImage(&map, QSize(newWidth, newHeight)); update(); } QWidget::resizeEvent(event); }</p><p>See also:<div class=see><a href="#index|drawLineTo__void_constQPoint&_">Back to index</a></div></p>
+
+<hr>Generated with <a href="http://www.ersa-france.com/makedoc"><b>makedoc</b>.</a></body>
+</html>
+
+
+

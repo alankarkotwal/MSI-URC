@@ -1,0 +1,52 @@
+#!/usr/bin/python
+
+import os
+from math import *
+
+kp = 1
+ki = 0
+kd = 0
+inch = 10
+
+us_1 = int(os.environ['ULTRASONIC_SENSOR_1'])
+us_2 = int(os.environ['ULTRASONIC_SENSOR_2'])
+us_3 = int(os.environ['ULTRASONIC_SENSOR_3'])
+us_4 = int(os.environ['ULTRASONIC_SENSOR_4'])
+sample_time = long(os.environ['PID_SAMPLE_TIME'])
+scale = float(os.environ['PWM_SCALING_FACTOR'])
+inches = [us_1, us_2, us_3, us_4];
+ideal = [inch, inch, inch, inch]
+error = []
+output_inches = []
+error_past = []
+error_int = []
+
+for i in range(4):
+	error_past.append(int(os.environ['PID_PAST_STATE_'+str(i+1)]))
+	error_int.append(int(os.environ['PID_INTEGRAL_'+str(i+1)]))
+	error.append(ideal[i] - inches[i])
+	output_inches.append(kp*error[i] + ki*(error_int[i] + error[i])*sample_time + kd*(error[i] - error_past[i])/sample_time)
+	
+front = output_inches[2] - output_inches[0]
+right = output_inches[3] - output_inches[1]
+
+angle=0
+angle2=0
+
+if front>= 0:
+	angle = atan(right/front)
+	change = angle*255/2/3.14159
+	left_pos = (255 + change)/scale
+	right_pos = (255 - change)/scale
+	left_neg = 0
+	right_neg = 0
+	
+else:
+	angle2 = atan((-1)*right/front)
+	change = angle*255/2/3.14159
+	left_neg = (255 + change)/scale
+	right_neg = (255 - change)/scale
+	left_pos = 0
+	right_pos = 0
+	
+print '%(lp)03d %(ln)03d %(rp)03d %(rn)03d' % {"lp": left_pos, "ln": left_neg, "rp": right_pos, "rn": right_neg}

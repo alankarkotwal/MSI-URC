@@ -1,0 +1,260 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="description" content="universal__Numeric.h Function Source Code">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>universal__Numeric.h Source Code </title>
+<link rel="stylesheet" href="qt_style.css">
+</head>
+
+<body class=body_source>
+
+<h1 align=center>universal__Numeric.h</h1>
+<p>This is the verbatim text of the file <b>universal__Numeric.h</b>.</p>
+<hr>
+<pre>
+/*
+ #######################################################################
+
+ Universal Numeric Types Classes, version 1.1.
+ Copyright (c) 2003 Michel MEHL (Haguenau, France). All Rights Reserved.
+
+ Michel MEHL MAKES NO WARRANTY OF ANY KIND REGARDING THIS CODE. THIS CODE IS PROVIDED WITHOUT ANY EXPRESS OR IMPLIED WARRANTY OF ANY KIND, INCLUDING WARRANTIES OF MERCHANTABILITY, NONINFRINGEMENT OR FITNESS FOR A PARTICULAR PURPOSE. NO LICENSE TO ANY COMMERCIAL PURPOSES NOR TO ANY INTELLECTUAL OWNERSHIP RIGHTS IS GRANTED HEREIN.
+
+ ####################################################################### 
+ */
+#ifndef __UNIVERSALNUMERIC_H__
+#define __UNIVERSALNUMERIC_H__
+
+#include "universal.h"
+#include "universal__String.h"
+
+namespace universal {
+  
+  /** 
+   * Built-in token base classes.
+   */
+
+  class Float;
+  class Double;
+  class UnsignedInteger;
+
+  /**
+   * secondary:
+   * This is a very simple component whose sole purpose is to wrap a
+   * signed integer value. The precise type is "long". 
+   *
+   * The cast operator to long() is often useful for getting the 
+   * value of a long integer token as a long. 
+   * This wrapper class features =,+,-,/ and * operators taking all the 
+   * other possible numeric types.
+   *
+   * It also features a conversion function to a universal::String.
+   */
+
+  class UNIVERSAL_DLL SignedInteger : public Object
+    {
+    private:      
+      long m_lValue;
+    public:
+      SignedInteger();
+      virtual ~SignedInteger();
+      operator long() const;
+      SignedInteger& operator =(long);
+      SignedInteger& operator =(short);
+      SignedInteger& operator =(int);
+      SignedInteger& operator =(unsigned long);
+      SignedInteger& operator =(unsigned short);
+      SignedInteger& operator =(unsigned int);
+      SignedInteger& operator =(float);
+      SignedInteger& operator =(double);
+      String toString() const;
+
+      bool even() const;
+      bool odd() const;
+
+      float operator+(const Float& f);
+      double operator+(const Double& d);
+      long operator+(const SignedInteger& si);
+      long operator+(const UnsignedInteger& ui);
+      float operator-(const Float& f);
+      double operator-(const Double& d);
+      long operator-(const SignedInteger& si);
+      long operator-(const UnsignedInteger& ui);
+      float operator*(const Float& f);
+      double operator*(const Double& d);
+      long operator*(const SignedInteger& si);
+      long operator*(const UnsignedInteger& ui);
+      float operator/(const Float& f);
+      double operator/(const Double& d);
+      long operator/(const SignedInteger& si);
+      long operator/(const UnsignedInteger& ui);
+    };
+
+  /**
+   * secondary:
+   * This is a very simple component whose sole purpose is to wrap an 
+   * unsigned integer value. The precise type is "unsigned long". 
+   *
+   * The cast operator to unsigned long() is often useful for getting the 
+   * value of an unsigned long integer token as an unsigned long. 
+   * This wrapper class features =,+,-,/ and * operators taking all the 
+   * other possible numeric types.
+   *
+   * It also features a conversion function to a universal::String.
+   */
+
+  class UNIVERSAL_DLL UnsignedInteger : public Object
+    {
+    private:      
+      unsigned long m_uValue;
+    public:
+      UnsignedInteger();
+      virtual ~UnsignedInteger();
+      operator unsigned long() const;
+      UnsignedInteger& operator =(unsigned long);
+      UnsignedInteger& operator =(unsigned short);
+      UnsignedInteger& operator =(unsigned int);
+      UnsignedInteger& operator =(long);
+      UnsignedInteger& operator =(short);
+      UnsignedInteger& operator =(int);
+      UnsignedInteger& operator =(float);
+      UnsignedInteger& operator =(double);
+      String toString() const; 
+
+      bool even() const;
+      bool odd() const;
+
+      float operator+(const Float& f);
+      double operator+(const Double& d);
+      long operator+(const SignedInteger& si);
+      unsigned long operator+(const UnsignedInteger& ui);
+      float operator-(const Float& f);
+      double operator-(const Double& d);
+      long operator-(const SignedInteger& si);
+      unsigned long operator-(const UnsignedInteger& ui);
+      float operator*(const Float& f);
+      double operator*(const Double& d);
+      long operator*(const SignedInteger& si);
+      unsigned long operator*(const UnsignedInteger& ui);
+      float operator/(const Float& f);
+      double operator/(const Double& d);
+      long operator/(const SignedInteger& si);
+      unsigned long operator/(const UnsignedInteger& ui);
+   };
+
+  /**
+   * secondary:
+   * This is a very simple component whose sole purpose is to wrap an 
+   * float value. The precise type is "float". 
+   *
+   * The cast operator to float() is often useful for getting the 
+   * value of a float token as a float. 
+   * This wrapper class features =,+,-,/ and * operators taking all the 
+   * other possible numeric types.
+   *
+   * It also features a conversion function to a universal::String.
+   */
+
+  class UNIVERSAL_DLL Float : public Object
+    {
+    private:      
+      float m_fValue;
+    public:
+      Float();
+      virtual ~Float();
+      operator float() const;
+      Float& operator =(float);
+      Float& operator =(double);
+      Float& operator =(unsigned long);
+      Float& operator =(unsigned short);
+      Float& operator =(unsigned int);
+      Float& operator =(long);
+      Float& operator =(short);
+      Float& operator =(int);
+      String toString() const;
+
+      float operator+(const Float& f);
+      double operator+(const Double& d);
+      float operator+(const SignedInteger& si);
+      float operator+(const UnsignedInteger& ui);
+      float operator-(const Float& f);
+      double operator-(const Double& d);
+      float operator-(const SignedInteger& si);
+      float operator-(const UnsignedInteger& ui);
+      float operator*(const Float& f);
+      double operator*(const Double& d);
+      float operator*(const SignedInteger& si);
+      float operator*(const UnsignedInteger& ui);
+      float operator/(const Float& f);
+      double operator/(const Double& d);
+      float operator/(const SignedInteger& si);
+      float operator/(const UnsignedInteger& ui);
+    };
+
+  /** 
+   * secondary:
+   * This is a very simple component whose sole purpose is to wrap an 
+   * double value. The precise type is "double". 
+   *
+   * The cast operator to double() is often useful for getting the 
+   * value of an double token as a double. 
+   * This wrapper class features =,+,-,/ and * operators taking all the 
+   * other possible numeric types.
+   *
+   * It also features a conversion function to a universal::String.
+   */
+
+  class UNIVERSAL_DLL Double : public Object
+    {
+    private:      
+      double m_dValue;
+    public:
+      Double();
+      virtual ~Double();
+      operator double() const;
+      Double& operator =(float);
+      Double& operator =(double);
+      Double& operator =(unsigned long);
+      Double& operator =(unsigned short);
+      Double& operator =(unsigned int);
+      Double& operator =(long);
+      Double& operator =(short);
+      Double& operator =(int);
+      String toString() const;
+
+      double operator+(const Float& f);
+      double operator+(const Double& d);
+      double operator+(const SignedInteger& si);
+      double operator+(const UnsignedInteger& ui);
+      double operator-(const Float& f);
+      double operator-(const Double& d);
+      double operator-(const SignedInteger& si);
+      double operator-(const UnsignedInteger& ui);
+      double operator*(const Float& f);
+      double operator*(const Double& d);
+      double operator*(const SignedInteger& si);
+      double operator*(const UnsignedInteger& ui);
+      double operator/(const Float& f);
+      double operator/(const Double& d);
+      double operator/(const SignedInteger& si);
+      double operator/(const UnsignedInteger& ui);
+    };
+
+#ifndef NO_STREAM
+  UNIVERSAL_DLL std::ostream& operator<<(std::ostream& os, const SignedInteger& si); 
+  UNIVERSAL_DLL std::ostream& operator<<(std::ostream& os, const UnsignedInteger& ui); 
+  UNIVERSAL_DLL std::ostream& operator<<(std::ostream& os, const Float& f); 
+  UNIVERSAL_DLL std::ostream& operator<<(std::ostream& os, const Double& d); 
+#endif
+}
+
+
+#endif
+
+</pre>
+</body>
+</html>
+
+
+

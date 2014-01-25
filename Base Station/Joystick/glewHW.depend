@@ -1,0 +1,112 @@
+# depslib dependency file v1.0
+1380044462 source:b:\sem 5\animation in technology\glewhw\main.cpp
+	<stdlib.h>
+	<GL/glew.h>
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<cstdio>
+	<iostream>
+
+1374464482 c:\users\ashish\downloads\glew-1.10.0\glew-1.10.0\include\gl\glew.h
+	<stddef.h>
+	<inttypes.h>
+	<stdint.h>
+	<inttypes.h>
+	<OpenGL/glu.h>
+	<GL/glu.h>
+
+1380655920 source:b:\sem 5\animation in technology\joysticktest\main.cpp
+	<stdlib.h>
+	<GL/glew.h>
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<cstdio>
+	<iostream>
+	"Gamepad.h"
+	<stdlib.h>
+	<stdio.h>
+	<unistd.h>
+	<string.h>
+
+1380654269 source:b:\sem 5\animation in technology\joysticktest\gamepad_private.c
+	"gamepad/Gamepad.h"
+	"gamepad/Gamepad_private.h"
+	<stdlib.h>
+
+1380654281 c:\users\ashish\downloads\gamepad_1.3.0\gamepad_1.3.0\include\gamepad\gamepad.h
+	<stdbool.h>
+
+1380654264 c:\users\ashish\downloads\gamepad_1.3.0\gamepad_1.3.0\include\gamepad\gamepad_private.h
+
+1380654257 source:b:\sem 5\animation in technology\joysticktest\gamepad_windows.c
+	"gamepad/Gamepad.h"
+	"gamepad/Gamepad_private.h"
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<regstr.h>
+
+1380654281 b:\sem 5\animation in technology\joysticktest\gamepad.h
+	<stdbool.h>
+
+1380654269 source:e:\msi\robotic_arm\mark_2\rachanas stuff\gamepad_private.c
+	"gamepad/Gamepad.h"
+	"gamepad/Gamepad_private.h"
+	<stdlib.h>
+
+1380654281 e:\msi\robotic_arm\mark_2\rachanas stuff\gamepad\gamepad.h
+	<stdbool.h>
+
+1380654264 e:\msi\robotic_arm\mark_2\rachanas stuff\gamepad\gamepad_private.h
+
+1380654257 source:e:\msi\robotic_arm\mark_2\rachanas stuff\gamepad_windows.c
+	"gamepad/Gamepad.h"
+	"gamepad/Gamepad_private.h"
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<regstr.h>
+
+1385915414 source:e:\msi\robotic_arm\mark_2\rachanas stuff\main.cpp
+	<stdlib.h>
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<cstdio>
+	<iostream>
+	"Gamepad.h"
+	<stdlib.h>
+	<stdio.h>
+	<unistd.h>
+	<string.h>
+	"SFile.h"
+	<math.h>
+
+1368260360 e:\msi\robotic_arm\mark_2\rachanas stuff\gl\glut.h
+	"freeglut_std.h"
+
+1368260360 e:\msi\robotic_arm\mark_2\rachanas stuff\gl\freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1301111164 e:\msi\robotic_arm\mark_2\rachanas stuff\gl\gl.h
+
+1301111166 e:\msi\robotic_arm\mark_2\rachanas stuff\gl\glu.h
+	<stddef.h>
+	<GL/gl.h>
+
+1380654281 e:\msi\robotic_arm\mark_2\rachanas stuff\gamepad.h
+	<stdbool.h>
+
+1374309258 source:e:\msi\robotic_arm\mark_2\rachanas stuff\sfile.cpp
+	"SFile.h"
+	<stdio.h>
+	<tchar.h>
+	<assert.h>
+
+1374309258 e:\msi\robotic_arm\mark_2\rachanas stuff\sfile.h
+	<windows.h>
+

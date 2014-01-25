@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Split module. This splits the incoming serial data stream and writes the extracted values to the Environment Variables.
+
+function Split {
+	export ULTRASONIC_SENSOR_1={$SERIAL_DATA_RECEIVED:0:2}
+	export ULTRASONIC_SENSOR_1={$SERIAL_DATA_RECEIVED:3:2}
+	export ULTRASONIC_SENSOR_1={$SERIAL_DATA_RECEIVED:6:2}
+	export ULTRASONIC_SENSOR_1={$SERIAL_DATA_RECEIVED:9:2}
+}
+
+function Join {
+	export SERIAL_DATA_TO_SEND=$PWM_LEFT$DELIM$PWM_RIGHT
+	echo $SERIAL_DATA_TO_SEND > $SERIAL_SEND_FILE
+}

@@ -1,0 +1,247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="description" content="universal.h Function Source Code">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>universal.h Source Code </title>
+<link rel="stylesheet" href="qt_style.css">
+</head>
+
+<body class=body_source>
+
+<h1 align=center>universal.h</h1>
+<p>This is the verbatim text of the file <b>universal.h</b>.</p>
+<hr>
+<pre>
+/*
+ #######################################################################
+
+ Universal Tools API.
+ Copyright (c) 2003-2005 Michel MEHL, Haguenau, France. All rights reserved.
+
+ Michel MEHL MAKES NO WARRANTY OF ANY KIND REGARDING THIS CODE. THIS CODE IS PROVIDED WITHOUT ANY EXPRESS OR IMPLIED WARRANTY OF ANY KIND, INCLUDING WARRANTIES OF MERCHANTABILITY, NONINFRINGEMENT OR FITNESS FOR A PARTICULAR PURPOSE. NO LICENSE TO ANY COMMERCIAL PURPOSES NOR TO ANY INTELLECTUAL OWNERSHIP RIGHTS IS GRANTED HEREIN.
+
+ ####################################################################### 
+ */
+#ifndef __UNIVERSALTOOLS_H__
+#define __UNIVERSALTOOLS_H__
+
+/* --- WINDOWS Base Includes 
+ */
+
+#ifdef WIN32
+//#pragma warning(disable: 4275) // exported class was derived from a class that was not exported.
+#pragma warning(disable: 4251) // warning on missing exported DLL linkage for MFG or standard libs
+#pragma warning(disable: 4786) // truncated debug information
+#pragma warning(disable: 4065) // switch statement contains 'default' but no 'case' labels
+#pragma warning(disable: 4800) // forcing value to bool 'true' or 'false' (performance warning)
+#ifdef _INC_AFX
+#include "afx.h"
+#else
+#include <windows.h>
+#endif
+#endif
+
+/* --- std namespace 
+ *
+ * If compiling C++ and NO_STD_NAMESPACE define set, 
+ * define the std namespace and the matching std stream classes
+ * typedefed from those defined in the global namespace.
+ * This is useful for older systems like WIN95 where no std
+ * namespace exists.
+ */
+
+#ifdef NO_STD_NAMESPACE
+#include <iostream>
+#include <fstream>
+#include <strstream>
+namespace std
+{
+  typedef ::iostream iostream;
+  typedef ::istream istream;
+  typedef ::ostream ostream;
+
+  typedef ::fstream fstream;
+  typedef ::ifstream ifstream;
+  typedef ::ofstream ofstream;
+
+  typedef ::strstream strstream;
+  typedef ::istrstream istrstream;
+  typedef ::ostrstream ostrstream;
+
+  typedef ::streampos streampos;
+}
+#else
+#include <iosfwd>
+#endif
+
+/* --- WINDOWS specific stuff: DLL defines
+ */
+
+#ifndef UNIVERSAL_DLL
+#ifdef WIN32
+#ifdef UNIVERSAL_EXPORT
+#define UNIVERSAL_DLL __declspec(dllexport)
+#else
+#define UNIVERSAL_DLL __declspec(dllimport)
+#endif
+#else
+#define UNIVERSAL_DLL
+#endif 
+#endif
+
+/* --- UNIT TEST MACROS
+ */
+
+#define TEST_ASSERT(os, mess, cond) \
+if (!(cond))\
+	ptest_assert_error(os, mess); \
+else \
+	ptest_assert_ok(os, mess); 
+
+#define TEST_FUNC(os, expected_type, expected_value, name, command) \
+{\
+expected_type ret;\
+if ((ret=command) != expected_value)  \
+	ptest_func_error(os, ret,expected_value,name,0);\
+else\
+	ptest_func_ok(os, ret,name);\
+}
+
+#define TEST_FUNC_NOT_INT(os, not_expected_type, not_expected_value, name, command) \
+{\
+not_expected_type ret;\
+if ((ret=command) != not_expected_value)  \
+	ptest_func_ok(os, ret,name);\
+else\
+	ptest_func_error(os, ret,not_expected_value,name,1);\
+}
+
+
+/* --- WINDOWS specific stuff: language type and POSIX defines 
+ */
+
+#ifdef WIN32
+
+  /* Older Windows defines 'bool' type and true/false */
+
+#if defined(_MSC_VER) && (_MSC_VER <= 0x3E8)
+#include <iostream>
+#endif
+
+  /* For testing device type */
+
+#ifndef S_ISDIR                         /* POSIX 1003.1 file type tests. */
+#define S_ISDIR(m)      ((m & 0170000) == 0040000)     /* directory */
+#define S_ISCHR(m)      ((m & 0170000) == 0020000)      /* char special */
+#define S_ISREG(m)      ((m & 0170000) == 0100000)      /* regular file */
+#define S_ISFIFO(m)     ((m & 0170000) == 0010000)      /* fifo */
+#define S_ISBLK(m)      ((m & 0170000) == 0060000)    
+#endif
+
+#ifndef S_ISLNK                         /* BSD POSIX 1003.1 extensions */
+#define S_ISLNK(m)      ((m & 0170000) == 0120000)      /* symbolic link */
+#define S_ISSOCK(m)     ((m & 0170000) == 0140000)      /* socket */
+#endif
+
+  /* Functions provided either for convenience or for POSIX compatibility 
+   * purposes.
+   */
+
+namespace universal {
+int winsynch_wait(HANDLE handle, long timeout_ms);
+}
+
+#endif // WIN32
+
+
+/* Crossplatform functions
+ */
+
+namespace universal {
+  
+#ifdef UNIVERSAL_THREAD
+int thread_sleep_us(unsigned long usec) ;
+int thread_sleep_nano(long ims, long inanos);
+#endif
+
+}
+
+
+/* --- ERRNO-related functions
+ */
+
+namespace universal {
+
+  /* A map table between errno and their name, e.g. "EINVAL", "EPERM"...
+   */
+
+  extern const char *c_aszErrnoNameMap[];
+
+#ifdef WIN32
+
+  /* The following table contains the mapping from Win32 errors to
+   * errno errors.
+   */
+
+  extern const char c_szErrnoMap[] ;
+  extern const int c_aiErrnoWSAMap[];
+  extern const unsigned int c_uErrnoMapLen ;
+  extern const unsigned int c_uWSAMapLen ;
+  
+  /* These methods sets the errno accordingly to the Windows errors.
+   */
+  
+  void set_errno() ;
+  //void set_errnoWSA();
+
+#endif // WIN32
+
+
+/* --- RESULT PRINTING FUNCTIONS for low unit testing
+ */
+
+void ptest_assert_ok(std::ostream& os, const char* c_pszMess);
+void ptest_assert_error(std::ostream& os, const char* c_pszMess);
+void ptest_func_ok(std::ostream& os, int iRetVal, const char* c_szFuncName);
+void ptest_func_error(std::ostream& os, int iRetVal, int iExpectVal, const char* c_szFuncName, int iNotExpected);
+
+}
+
+namespace universal {
+/* ------------------------------------------------------------------------- */
+/**
+ * Base class for all univesal classes.
+ */
+
+class UNIVERSAL_DLL Object 
+{
+protected:
+
+  Object();
+
+public:
+
+  virtual ~Object();
+};
+
+
+}
+
+
+
+#endif
+
+
+
+
+
+
+
+
+</pre>
+</body>
+</html>
+
+
+

@@ -1,0 +1,40 @@
+#!/usr/bin/python
+
+from serial import *
+import os
+import sys
+import signal
+
+TelePort=Serial()
+TelePort.baudrate=int(os.environ['TELE_BAUDRATE'])
+TelePort.port=os.environ['TELE_PORT']
+TelePort.open()
+
+def CreateScript(signum, frame):
+	TelePort.flushInput()
+	while TelePort.inWaiting() is 0:
+		pass
+	#InputData=ord(TelePort.read(int(os.environ['DATA_LENGTH'])))
+	InputData=TelePort.read(int(os.environ['DATA_LENGTH']))
+	SerialDataFile=open(os.environ['TELE_DATA_FILE'],"w+")
+	SerialDataFile.write("#!/bin/bash\n")
+	SerialDataFile.write("export TELE_DATA_RECEIVED='"+str(InputData)+"'")
+	SerialDataFile.close()
+	os.kill(int(os.environ['BASH_PID']),int(os.environ['TELE_SCRIPT_READY_SIGNAL']))
+
+def SendData(signum, frame):
+	DataFile=open(os.environ['TELE_SEND_FILE'],"r+")
+	SendData=DataFile.readline().strip()
+	TelePort.write(SendData)
+	DataFile.close()
+	
+def Close(signum, frame):
+	TelePort.close()
+	sys.exit(0)
+
+signal.signal(signal.SIGRTMIN+int(os.environ['MAIN_WANTS_TELE_DATA_SIGNAL']), CreateScript)
+signal.signal(signal.SIGRTMIN+int(os.environ['MAIN_HAS_TELE_DATA_SIGNAL']), SendData)
+#signal.signal(signal.SIGTERM, Close)
+
+while 1:
+	pass

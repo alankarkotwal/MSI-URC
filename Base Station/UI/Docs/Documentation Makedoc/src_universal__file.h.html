@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="description" content="universal__File.h Function Source Code">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>universal__File.h Source Code </title>
+<link rel="stylesheet" href="qt_style.css">
+</head>
+
+<body class=body_source>
+
+<h1 align=center>universal__File.h</h1>
+<p>This is the verbatim text of the file <b>universal__File.h</b>.</p>
+<hr>
+<pre>
+/*
+ #######################################################################
+
+ Universal File Class, version 1.1.
+ Copyright (c) 2003-2005 Michel MEHL, Haguenau, France. All rights reserved.
+
+ Michel MEHL MAKES NO WARRANTY OF ANY KIND REGARDING THIS CODE. THIS CODE IS PROVIDED WITHOUT ANY EXPRESS OR IMPLIED WARRANTY OF ANY KIND, INCLUDING WARRANTIES OF MERCHANTABILITY, NONINFRINGEMENT OR FITNESS FOR A PARTICULAR PURPOSE. NO LICENSE TO ANY COMMERCIAL PURPOSES NOR TO ANY INTELLECTUAL OWNERSHIP RIGHTS IS GRANTED HEREIN.
+
+ ####################################################################### 
+ */
+
+#ifndef __UNIVERSALFILE_H__
+#define __UNIVERSALFILE_H__
+
+#include <stdio.h>
+#include <vector>
+
+#include "universal.h"
+#include "universal__String.h"
+
+namespace universal {
+
+  class File;
+
+  typedef std::vector<universal::File> FileList;
+
+  /**
+   * This class offers a set of low and high-level operations for safe 
+   * and convenient handling of directories or conventional files including 
+   * common operations like reading, writing, copying, removing, existence and 
+   * difference checking and so forth.
+   *
+   * Conventional files are handled as raw streams of bytes which can be 
+   * randomly accessed. Sometimes high-level string objects can be passed as 
+   * input to or/and returned as result of a function.
+   *
+   * The term "file" is used throughout the API and documentation to refer 
+   * both to directories or conventional files.
+   *
+   * This class is designed for high performance and relies directly upon
+   * the C file stream API (FILE*, fwrite(), fread()...).
+   */
+
+  class UNIVERSAL_DLL File : public Object
+    {
+
+    public:
+
+      typedef enum {
+	FS_LOCAL   = 0,
+	FS_UNIX    = 1,
+	FS_WINDOWS = 2,
+	FS_MAC     = 3
+      } FS_CATEGORY;
+      
+
+    private:
+
+      String  m_sFilename;
+      String  m_sFilepath;
+      String  m_sMode;
+      long    m_iSize;
+      FILE   *m_pFileDescriptor;
+      bool    m_bFailFlag;
+      String  m_sErrorMessage;
+
+    protected:
+      
+      // Current file system category
+      FS_CATEGORY m_fs;
+
+    public:
+
+      static File temp();
+      static File tempFile(const String& c_sPrefix, const String& c_sTempSubDir = "");
+      static String cwd();
+      static String path(String sPath1, String sPath2, FS_CATEGORY fs_category = FS_LOCAL);
+      static String join(String sPath1, String sPath2, FS_CATEGORY fs_category = FS_LOCAL);
+      static bool exists(const String& c_sFilePath);
+      static bool diff(const String& c_sFile1, const String& c_sFile2);
+      static bool copy(const char* pszSrc, const char* pszDst, bool bOverwrite = false);
+      static String separator(FS_CATEGORY fs_category = FS_LOCAL);
+      static String resolveLinks(const String& c_sPath);
+      static FileList findIn(const String& c_sNamePatternList, const StringList& c_sDirs, bool bRecurse = true);
+      static String content(const String& c_sFilePath);
+      static bool create(const String& c_sFilePath, const String& c_sContent = "");
+      static unsigned long filterList(FileList& files, const String& c_patternList);
+      static FileList concatList(const FileList& c_fl1, const FileList& c_fl2);
+      static bool changeDirectory(const String& sDir);
+      static bool isAbsolutePath(const String& c_s);
+
+      static void stripFileName(universal::String& sName, FS_CATEGORY fs_category = FS_LOCAL);
+
+      static const unsigned long MAXIMUM_PATH_LENGTH; 
+
+    public:
+
+      File();
+      File(const String& c_sFileName, String sMode = "r", bool bDoOpen = true);
+      virtual ~File() ;
+	 
+      bool isOpen() const;
+      bool exists() const;
+      bool isDirectory() const;
+      bool isRoot();
+      bool isNull() const;
+      bool fail() const; 
+      bool eof();
+      bool flush();
+      bool purge();
+      void clear();
+
+      File directory();
+      String name() const;
+      String basename(bool bWithoutExtension = false) const;
+      String extension() const;
+      String lookupPath();
+      String absolutePath();
+      String relativePathTo(const String& c_sOtherFile);
+      String dos83alias();
+      String devicePath();
+      String hardDriveId();//String s);
+
+      FS_CATEGORY fileSystemCategory();
+
+      String getErrorMessage() const; 
+
+      void setName(const String& c_sName);
+      void setExtension(const String& c_ext);
+      File& operator=(const char* c_pszName);
+
+      virtual void open() ;
+      virtual void close() ;
+      bool remove(bool bRecurse = false);
+      bool rm(bool bRecurse = false);
+      bool cat();
+      bool cat(std::ostream& os);
+      bool cat(String& s);
+
+      bool mkdirs(bool bForce = false);
+      bool cd();
+
+      File commonAncestor(File& f);
+      FileList find(const String& c_sNamePatternList = "*", bool bRecurse = true);
+
+      FileList ls(const String& c_sNamePatternList = "*");
+      FileList listFiles(const String& c_sNamePatternList = "*", bool bFilesOnly = true);
+      FileList listDirectories(const String& c_sNamePatternList = "*");
+
+      unsigned long write(const String &c_s) ;
+      unsigned long write(const unsigned char *c_pucBytes, unsigned long uOffset, unsigned long uLen);
+      unsigned long writeLine(const String& c_s) ;
+
+      int read() ;
+      long read(String& sContent, long iSize = -1);
+      String readLine(bool bWithNewLine = false);
+
+      File& fill(unsigned long uLen, char c);
+      bool shift(const unsigned long c_uFromPos, long uByteOffset);
+      bool shift(long uByteOffset);
+      bool insert(unsigned long uFromPos, const String& c_sBuf); 
+
+      bool seek(unsigned long uPos) ;
+      bool seekcur(long iOffset) ;
+      long size() ;
+      long getFilePos() ;
+
+
+      operator universal::String() const;
+
+      bool isCppHeader() const;
+      bool isCppImplementation() const;
+      bool isJava() const;
+
+    protected:
+
+      virtual long read(unsigned char *pucBytes, unsigned long uOffset, unsigned long uSize);
+     
+      void fail(bool bFail); 
+    } ;
+}
+#endif
+
+</pre>
+</body>
+</html>
+
+
+

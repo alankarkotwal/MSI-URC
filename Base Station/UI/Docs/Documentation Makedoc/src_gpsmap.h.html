@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="description" content="GPSMap.h Function Source Code">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>GPSMap.h Source Code </title>
+<link rel="stylesheet" href="qt_style.css">
+</head>
+
+<body class=body_source>
+
+<h1 align=center>GPSMap.h</h1>
+<p>This is the verbatim text of the file <b>GPSMap.h</b>.</p>
+<hr>
+<pre>
+#ifndef GPSMAP_H
+#define GPSMAP_H
+
+#include <QColor>
+#include <QImage>
+#include <QPoint>
+#include <QScrollArea>
+
+class GPSMap : public QScrollArea
+{
+    Q_OBJECT
+
+public:
+    GPSMap(QWidget *parent = 0);
+    void init();
+    bool openMap(const QString &fileName);
+    void clearMap();
+    void setPenColor(const QColor &newColor);
+    void setPenWidth(int newWidth);
+
+    bool isModified() const { return modified; }
+    QColor penColor() const { return myPenColor; }
+    int penWidth() const { return myPenWidth; }
+
+public slots:
+    //void clearImage();
+
+protected:
+    void mousePressEvent(QMouseEvent *event);
+    //void mouseMoveEvent(QMouseEvent *event);
+    //void mouseReleaseEvent(QMouseEvent *event);
+    void paintEvent(QPaintEvent *event);
+    //void resizeEvent(QResizeEvent *event);
+
+public:
+    void drawLineTo(const QPoint &endPoint);
+
+    bool modified;
+    int myPenWidth;
+    int currentMap;
+    bool drawPath;
+
+    QColor myPenColor;
+    QImage map;
+    QPoint lastPoint;
+
+    QPoint RoverGPSPos;
+};
+
+#endif // GPSMAP_H
+
+</pre>
+</body>
+</html>
+
+
+

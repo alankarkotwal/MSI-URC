@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="description" content="rarrow.h Function Source Code">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>rarrow.h Source Code </title>
+<link rel="stylesheet" href="qt_style.css">
+</head>
+
+<body class=body_source>
+
+<h1 align=center>rarrow.h</h1>
+<p>This is the verbatim text of the file <b>rarrow.h</b>.</p>
+<hr>
+<pre>
+#ifndef DABARUARROW_H
+#define DABARUARROW_H
+
+//#include <math.h>
+
+#include <QPoint>
+#include <QPixmap>
+#include <QPainter>
+//#include <QColor>
+
+class mArrow
+{
+public:
+    mArrow();
+    ~mArrow();
+    
+    void draw(QPainter *p,QPoint pos);
+    
+    
+public:
+    QPixmap imagepixmap;
+    QPointF localCenter; //14,48
+    
+};
+
+#endif // DABARUARROW_H
+
+</pre>
+</body>
+</html>
+
+
+

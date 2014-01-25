@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="description" content="appsettingsdialog.h Function Source Code">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>appsettingsdialog.h Source Code </title>
+<link rel="stylesheet" href="qt_style.css">
+</head>
+
+<body class=body_source>
+
+<h1 align=center>appsettingsdialog.h</h1>
+<p>This is the verbatim text of the file <b>appsettingsdialog.h</b>.</p>
+<hr>
+<pre>
+#ifndef APPSETTINGSDIALOG_H
+#define APPSETTINGSDIALOG_H
+
+#include <QDialog>
+
+
+QT_USE_NAMESPACE
+
+QT_BEGIN_NAMESPACE
+
+namespace Ui {
+class AppSettingsDialog;
+}
+
+class QIntValidator;
+
+QT_END_NAMESPACE
+
+class AppSettingsDialog : public QDialog
+{
+    Q_OBJECT
+
+public:
+
+    explicit AppSettingsDialog(QWidget *parent = 0);
+    ~AppSettingsDialog();
+
+
+private slots:
+    void apply();
+
+private:
+    Ui::AppSettingsDialog *ui;
+    //Settings currentSettings;
+};
+
+#endif // APPSETTINGSDIALOG_H
+
+</pre>
+</body>
+</html>
+
+
+

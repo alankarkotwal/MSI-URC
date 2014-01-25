@@ -1,0 +1,20 @@
+[universal-qt]
+AppSettingsDialog = ../../universal/html/appsettingsdialog.html
+Double = ../../universal/html/double.html
+File = ../../universal/html/file.html
+Float = ../../universal/html/float.html
+GPSMap = ../../universal/html/gpsmap.html
+Gamepad.h = ../../universal/html/gamepad.h.html
+Gamepad_private.h = ../../universal/html/gamepad_private.h.html
+ImageCache = ../../universal/html/imagecache.html
+ImageCache::Tile = ../../universal/html/imagecache.tile.html
+JoyData = ../../universal/html/joydata.html
+MainWindow = ../../universal/html/mainwindow.html
+Object = ../../universal/html/object.html
+QMapWidget = ../../universal/html/qmapwidget.html
+SettingsDialog = ../../universal/html/settingsdialog.html
+SignedInteger = ../../universal/html/signedinteger.html
+String = ../../universal/html/string.html
+UnsignedInteger = ../../universal/html/unsignedinteger.html
+joystickObject = ../../universal/html/joystickobject.html
+mArrow = ../../universal/html/marrow.html

@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# Main Script. Executed on startup, when the bootloader recieves a signal from the controller.
+
+# For changes in system settings look for that setting in either ./EnvironmentConstants or ./EnvironmentVariablesOriginal
+# DO NOT change any other files, they are INDEPENDENT of system settings.
+
+# SETUP ******************************************************************************************************************
+
+# DO NOT REMOVE THESE LINES. THEY SOURCE IMPORTANT FILES. ***********************
+
+. EnvironmentConstants
+. EnvironmentVariables
+. $GPIO_FUNCTIONS
+. $SIGNAL_FUNCTIONS
+. $SPLIT_FUNCTIONS
+
+# Start essential processes and note their PIDs.
+export BASH_PID=$$
+
+$SERIAL_PROCESS &
+export SERIAL_PID=$!
+sleep 0.1
+. $SERIAL_INIT_FILE
+
+$TELE_PROCESS &
+export TELE_PID=$!
+sleep 0.1
+
+
+#********************************************************************************
+
+# SIGNAL TRAPS. *****************************************************************
+
+# Clean-up
+trap "killall Serial; killall Telemetry; exit" INT TERM
+
+# Serial Traps
+trap "echo 'lol'; . $SERIAL_DATA_FILE; echo 'blol'" RTMIN+$SERIAL_SCRIPT_READY_SIGNAL
+trap "echo 'lol'; . $TELE_DATA_FILE; echo 'blol'" RTMIN+$TELE_SCRIPT_READY_SIGNAL
+
+
+#********************************************************************************
+
+# Give time to initialise Serial Process
+
+sleep 2
+
+# LOOP *******************************************************************************************************************
+
+while [ 1 ]
+do
+	kill -SIGRTMIN+$MAIN_WANTS_TELE_DATA_SIGNAL $TELE_PID
+	sleep 0.00001
+	source $TELE_DATA_FILE
+	echo $TELE_DATA_RECEIVED > $SERIAL_SEND_FILE
+
+	#echo a > $SERIAL_SEND_FILE
+	kill -SIGRTMIN+$MAIN_HAS_DATA_SIGNAL $SERIAL_PID
+
+	sleep 0.001
+done

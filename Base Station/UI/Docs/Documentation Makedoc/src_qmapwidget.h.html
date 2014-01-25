@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="description" content="qmapwidget.h Function Source Code">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>qmapwidget.h Source Code </title>
+<link rel="stylesheet" href="qt_style.css">
+</head>
+
+<body class=body_source>
+
+<h1 align=center>qmapwidget.h</h1>
+<p>This is the verbatim text of the file <b>qmapwidget.h</b>.</p>
+<hr>
+<pre>
+
+#ifndef QMAPWIDGET_H
+#define QMAPWIDGET_H
+
+#include <QWidget>
+#include <QDateTime>
+#include <QTimer>
+#include <QVector>
+
+#include "ImageCache.h"
+#include "rarrow.h"
+
+
+class QMapWidget : public QWidget
+{
+    Q_OBJECT
+public:
+    QMapWidget();
+    ~QMapWidget();
+
+public:
+    void setSpotPosition(double lat, double lon);
+    void setTargetPosition(double lat, double lon);
+    void resetTargetPosition();
+    void centerTo(qint64 x, qint64 y);
+    void centerToSpot();
+public slots:
+    void zoomIn();
+    void zoomOut();
+    void zoomInAt(int x, int y);
+    void zoomOutAt(int x, int y);
+    void setZoomLevel(int level);
+    void setZoomLevelAt(int level, int x, int y);
+    void setCache(ImageCache* cache);
+    //int getZoomLevel();
+    //QPoint getCoords();
+signals:
+    void canZoomIn(bool status);
+    void canZoomOut(bool status);
+    void zoomLevelChanged(int level);
+
+protected:
+    virtual void mousePressEvent(QMouseEvent *);
+    virtual void mouseReleaseEvent(QMouseEvent *);
+    virtual void wheelEvent(QWheelEvent *);
+    virtual void mouseMoveEvent(QMouseEvent *);
+    virtual void paintEvent(QPaintEvent *);
+    void adjustCenter();
+
+protected slots:
+    void targetTimerTick();
+
+private:
+    QImage* getTileImage(quint32 x, quint32 y, int zoom);
+    void convertLatLonToXY(double lat, double lon, qint64* px, qint64* py);
+
+private:
+    ImageCache *images;
+    int zoomLevel;
+    int zoomlevelText;
+    int minZoomLevel;
+    int maxZoomLevel;
+    qint64 m_ViewportX, m_ViewportY;
+    int m_MouseX, m_MouseY;
+    qint64 m_spotx, m_spoty;
+    qint64 m_targetx, m_targety;
+    QTimer m_targettimer;
+    mArrow arrow;
+};
+
+#endif // QMAPWIDGET_H
+
+</pre>
+</body>
+</html>
+
+
+

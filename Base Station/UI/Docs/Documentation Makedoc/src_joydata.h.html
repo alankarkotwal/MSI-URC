@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="description" content="joydata.h Function Source Code">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>joydata.h Source Code </title>
+<link rel="stylesheet" href="qt_style.css">
+</head>
+
+<body class=body_source>
+
+<h1 align=center>joydata.h</h1>
+<p>This is the verbatim text of the file <b>joydata.h</b>.</p>
+<hr>
+<pre>
+#ifndef JOYDATA_H
+#define JOYDATA_H
+
+
+#include <QObject>
+#define MaxNoButton 12
+#define MaxNoAxis 6
+
+
+class JoyData: public QObject
+{Q_OBJECT
+public:
+    JoyData();
+    bool button[MaxNoButton];
+    float axis[MaxNoAxis];
+    unsigned int changedAxisNo;
+    unsigned int device;
+    bool deviceAttachedorRemoved;
+
+    bool btnEv;
+signals:
+    void changed(bool btnEv,unsigned int cAn);
+};
+
+#endif // JOYDATA_H
+
+</pre>
+</body>
+</html>
+
+
+

@@ -1,0 +1,335 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="description" content="universal__String.h Function Source Code">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>universal__String.h Source Code </title>
+<link rel="stylesheet" href="qt_style.css">
+</head>
+
+<body class=body_source>
+
+<h1 align=center>universal__String.h</h1>
+<p>This is the verbatim text of the file <b>universal__String.h</b>.</p>
+<hr>
+<pre>
+/*
+ #######################################################################
+
+ Universal String Class, version 1.1.
+ Copyright (c) 2003-2005 Michel MEHL, Haguenau, France. All rights reserved.
+
+ Michel MEHL MAKES NO WARRANTY OF ANY KIND REGARDING THIS CODE. THIS CODE IS PROVIDED WITHOUT ANY EXPRESS OR IMPLIED WARRANTY OF ANY KIND, INCLUDING WARRANTIES OF MERCHANTABILITY, NONINFRINGEMENT OR FITNESS FOR A PARTICULAR PURPOSE. NO LICENSE TO ANY COMMERCIAL PURPOSES NOR TO ANY INTELLECTUAL OWNERSHIP RIGHTS IS GRANTED HEREIN.
+
+ ####################################################################### 
+ */
+#ifndef __UNIVERSALSTRING_H__
+#define __UNIVERSALSTRING_H__
+
+#ifndef NO_TEMPLATE
+#include <vector>
+#endif
+#include "universal.h"
+
+
+namespace universal {
+
+  class String;
+
+#ifndef NO_TEMPLATE
+  typedef std::vector<universal::String> StringList;
+#endif
+
+
+  /**
+   * This class offers a set of low and high-level operations for safe 
+   * and convenient handling of character strings, including commonly used 
+   * operators (==,=...) and conversion functions to numeric types. 
+   *
+   * The strings are managed like conventional C-style null-terminated ASCII
+   * strings (char *). Input or output const char* values are therefore
+   * always assumed to be null-terminated. If not so, the results are 
+   * undefined.
+   *
+   * The cast operator to const char* is useful for getting the raw C-style
+   * string. 
+   *
+   * Some of the functions are also compatible with the handling of binary 
+   * buffers, even if these buffers may contain null or non-printable chars.
+   * This peculiarity is always documented for the matching functions.
+   *
+   * This class is especially optimised for high performance and combines 
+   * internally static and dynamic memory buffering. A string instance always
+   * holds a deep and private copy of its string. String instances never share 
+   * memory buffers.
+   */
+
+  class UNIVERSAL_DLL String : public Object
+  {
+  private:
+
+    static unsigned long ms_defaultCapacity;
+    static unsigned long STATIC_BUFFER_SIZE;
+    unsigned long m_uLen;
+    unsigned long m_uCapacity;
+    bool m_bCaseLess;
+
+  protected:
+
+    char *m_pBuffer;
+    char *m_pDynamicBuffer;
+    char m_szStaticBuffer[64];
+	    
+  public:    
+
+    String();
+    String(const char* lpszSource, long iLen = -1);
+    String(const String& rStr);
+    String(char c);
+    String(unsigned char c);
+    String(int iValue, const char* lpszFormat = 0);
+    String(unsigned int uValue, const char* lpszFormat = 0);
+    String(long iValue, const char* lpszFormat = 0);
+    String(unsigned long uValue, const char* lpszFormat = 0);
+    String(float fSource, const char* lpszFormat = 0);
+    String(double dSource, const char* lpszFormat = 0);
+    virtual ~String();
+
+  public:
+
+    int hashCode() const;
+    bool empty() const;
+    unsigned long length(void) const;
+    unsigned long capacity(void) const;
+    const char* str() const;
+    bool isUINT() const ;
+
+    /* Assignment functions
+     */
+    
+    void setEmpty();
+    void set(const char* pszValue);
+    void setCaseLess(bool bCase = true);
+    bool isCaseLess() const;
+
+    /* Extraction / Transformation / Search functions
+     */
+
+    String left(unsigned int uLength) const ;
+    String right(unsigned int uLength) const ;
+    String mid(unsigned int uPosition, unsigned int uLength) const ;
+    String substring(unsigned int uPosition, unsigned int uPositionEnd) const ;
+    String operator()(unsigned int uPosition, unsigned int uLength) const ;
+    String grep(const String& c_sSearch);
+
+    const char& charAt(unsigned long uIndex) const;
+    const char& charAt(long iIndex) const;
+
+    char& charAt(unsigned long uIndex);
+    char& charAt(long iIndex);
+      
+    int indexOf(int cha, unsigned long uStartFrom = 0) const;
+    int indexOf(const String& rStr, unsigned long uStartFrom = 0, bool bIgnoreCase = false) const;
+    int lastIndexOf(int cha, unsigned long uStartFrom = 0) const;
+    int lastIndexOf(const String& rStr, unsigned long uStartFrom = 0, bool bIgnoreCase = false) const;
+
+    bool regionMatches(bool ignoreCase, unsigned long utoffset, const String rStr, unsigned long uooffset, unsigned long uLen) const;
+
+    /* Modification functions
+     */
+
+    String& reverse();
+
+    String& toUpperCase(void);
+    String& toLowerCase(void);
+
+    String& trimLeft(char c = ' ', bool bLessToo = false);
+    String& trimRight(char c = ' ', bool bLessToo = false);
+    String& trim(char c = ' ', bool bLessToo = false);
+
+    String& shiftLeft(unsigned long uHowMuch = 1);
+    String& shiftRight(unsigned long uHowMuch = 1, char rightc = ' ');
+
+    String& fill(unsigned long uLen, char fillc = ' ', unsigned long uFrom = 0xFFFFFFFF);
+
+    String& untabify(unsigned short usTabLen = 8);
+    String& untabifyWithCursor(unsigned long& uPos, unsigned short usTabLen = 8);
+
+    String& escapeSequence();
+
+    /* High-level text transformation
+     */
+
+    String& formatColumn(unsigned long uColWidth);
+    String& justify(unsigned long uColWidth);
+
+
+    bool replace(char cOld, char cNew, bool bAll = false);
+    bool replace(char cOld, const char* pszNew, bool bAll = false);
+    bool replace(const char* pszOld, char cNew, bool bAll = false);
+    bool replace(const char* pszOld, const char* pszNew, bool bAll = false);
+
+    bool insert(unsigned long uOffset, const String& rStr);
+    bool insert(unsigned long uOffset, char c);
+
+    bool eraseRange(unsigned long start, long end = -1);
+    bool erase(unsigned long start = 0, int nb = -1);
+
+    bool rubout(const String& c_s, char cEraseChar = ' ', unsigned long uFrom = 0);
+    
+    String& append(const char *pzStr);
+    String& append(const String& rStr);
+    String& append(char c);
+    String& append(unsigned char c);
+    String& append(unsigned int uN) ;
+    String& append(int iN) ;
+    String& append(unsigned long uN) ;
+    String& append(long iN) ;
+    String& append(float fN) ;
+    String& append(double dN) ;
+    String& nl(const String& rStr);
+
+    String token(char cSep);
+    String token(const String& rstrSep);
+
+    StringList split(const String& c_sSep, bool bTrimItems = true) const;
+
+    /* Comparison operators
+     */
+
+    bool equals(const char *pszStr) const;
+    bool equals(const String& rStr) const;
+    bool equalsIgnoreCase(const char *pszStr) const;
+    bool equalsIgnoreCase(const String& rStr) const;
+    
+    bool startsWith(const String& rStr) const;
+    bool endsWith(const String& rStr) const;
+    
+    bool matchesPattern(const String& c_sPattern) const;
+    bool matchesPattern(const StringList& c_slPatternList) const;
+
+    bool consistsOfChars(const char *chararray) const;
+
+    /* Cast and conversion functions
+     */
+
+    operator const char*() const;
+    String toString() const;
+
+    /* Operators
+     */
+
+    char& operator [](int iIndex);
+    char& operator [](long iIndex);
+    char& operator [](unsigned int uIndex);
+    char& operator [](unsigned long uIndex);
+    const char& operator [](long iIndex) const;
+    const char& operator [](int iIndex) const;
+    const char& operator [](unsigned int uIndex) const;
+    const char& operator [](unsigned long uIndex) const;
+
+    String& operator= (char c);          
+    String& operator= (unsigned char c);          
+    String& operator= (const char* pszSource);          
+    String& operator= (const String& rstrSource) ;
+    String& operator= (int iSource) ;
+    String& operator= (unsigned int uSource) ;
+    String& operator= (long lSource) ;
+    String& operator= (unsigned long uSource) ;
+    String& operator= (short sSource) ;
+    String& operator= (unsigned short usSource) ;
+    String& operator= (float fSource) ;
+    String& operator= (double dSource) ;
+
+    String& operator+= (const char* pszSource);
+    String& operator+= (const String& rstrSource);
+    String& operator+= (char c);
+    String& operator+= (unsigned char c);
+    String& operator+= (int iAdd); 
+    String& operator+= (unsigned int iAdd) ;
+    String& operator+= (long lAdd) ; 
+    String& operator+= (unsigned long uAdd) ;
+    String& operator+= (float fAdd) ; 
+    String& operator+= (double dAdd) ;
+
+    String operator+(const char* pszSource) const;
+    String operator+(const String& rstrSource) const;
+    String operator+(char c) const;
+    String operator+(unsigned char c) const;
+    String operator+(int iSource) const;
+    String operator+(unsigned int uSource) const;
+    String operator+(long lSource) const;
+    String operator+(unsigned long uSource) const;
+    String operator+(float fSource) const;
+    String operator+(double dSource) const;
+
+    bool operator==(const char* pszStr) const;
+    bool operator==(const String& rStr) const;
+    bool operator==(unsigned char c) const;
+    bool operator==(char c) const;
+    bool operator==(int iSource) const;
+    bool operator==(unsigned int  uSource) const;
+    bool operator==(long lSource) const;
+    bool operator==(unsigned long uSource) const;
+    bool operator==(float fSource) const;
+    bool operator==(double dSource) const;
+
+    bool operator!=(const char* pszStr) const;
+    bool operator!=(const String& rStr) const;
+    bool operator!=(unsigned char c) const;
+    bool operator!=(char c) const;
+    bool operator!=(int iSource) const;
+    bool operator!=(unsigned int  uSource) const;
+    bool operator!=(long lSource) const;
+    bool operator!=(unsigned long uSource) const;
+    bool operator!=(float fSource) const;
+    bool operator!=(double dSource) const;
+    
+  public: // Public STATIC methods
+
+    static bool toString(long lSource, String& rRes);
+    static bool toString(unsigned long uSource, String& rRes);
+    static bool toString(double rdSource, String& rRes, int iPrecision = 10);
+    static bool toLong(const String& rStr, long& rlTarget);
+    static bool toUnsignedLong(const String& rStr, unsigned long& rulTarget);
+    static bool toDouble(const String& rStr, double& rdTarget);
+    static bool toFloat(const String& rStr, float& rfTarget);
+
+    static String formatOptionHelp(String sOpt, 
+				   String sHelpText, 
+				   unsigned long uOptColWidth = 30, 
+				   unsigned long uHelpColWidth = 40, 
+				   unsigned long uOptNbIndent = 2);
+
+  protected:
+
+    void ensureCapacity(unsigned long minimumCapacity);
+
+    int getChars(int srcBegin, int srcEnd, char *dst, int dstBegin) const; // Set to private and to "friend" for other strings
+    void setChars(const char* pszSource, unsigned long uSrcLen, unsigned long uSrcBegin);
+
+  private:
+
+    void initBuffer(unsigned long requiredCapacity);      
+  };
+
+  UNIVERSAL_DLL String operator+(const char* pszSource, const String& rStr);
+  UNIVERSAL_DLL bool operator<(const String& rStr1, const String& rStr2); 
+  UNIVERSAL_DLL bool operator>(const String& rStr1, const String& rStr2); 
+
+#ifndef NO_STREAM
+
+  UNIVERSAL_DLL std::ostream& operator<<(std::ostream& os, const String& rStr); 
+#endif
+
+}
+
+
+#endif
+
+</pre>
+</body>
+</html>
+
+
+
