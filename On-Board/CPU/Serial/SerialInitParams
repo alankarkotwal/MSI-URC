@@ -1,3 +1,0 @@
-#!/bin/bash
-export SERIAL_PORT="/dev/ttyACM0"
-export SERIAL_IS_OPEN=1
