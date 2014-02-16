@@ -1,0 +1,55 @@
+#include<opencv2/core/core.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<stdio.h>
+
+using namespace cv;
+
+int main(int, char**)
+{
+	VideoCapture cap(0); // open the default camera
+	if(!cap.isOpened())  // check if we succeeded
+	return -1;
+
+	Mat frame;
+	Mat thresh;
+	
+	Moments thresh_mom;
+
+	float y_com, x_com;
+
+	cap >> frame; // get a new frame from camera
+
+	inRange(frame, Scalar(0,110,90), Scalar(45,206,166), thresh); 
+//	imshow("blah", thresh);
+//	waitKey(0);
+		
+	thresh_mom=moments(thresh);
+
+	x_com=thresh_mom.m10/thresh_mom.m00;
+	
+	float ratio=x_com/frame.cols;
+	
+//	printf("%f", ratio);
+	
+	if(ratio<0.4)
+	{
+		printf("l");
+	}
+	else if(ratio>0.6)
+	{
+		printf("r");
+	}
+	else if(ratio>0.4 && ratio<0.6)
+	{
+		printf("f");
+	}
+	else
+	{
+		printf("s");
+	}
+	
+	cap.release();
+	
+	return 0;
+}

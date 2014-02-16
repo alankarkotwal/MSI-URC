@@ -1,0 +1,88 @@
+#!/bin/bash
+
+#************************************************
+# Environment and Global Settings
+
+# Set this to one if the script is to be used in Debug mode.
+export DEBUG=1
+
+# Serial Settings
+export SERIAL_PREFIX="/dev/ttyACM"
+export MAX_SERIAL_PORTS=10
+export SERIAL_EXEC="./Serial/Serial"
+export SERIAL_INIT_FILE="./Serial/SerialInitParams"
+export SERIAL_DATA_FILE="./Serial/SerialData"
+export SERIAL_SEND_FILE="./Serial/SerialDataSend"
+export SERIAL_BAUDRATE=9600
+
+# Telemetry Settings
+export TELE_PORT="/dev/ttyAMA0"
+export TELE_BAUDRATE=9600
+export TELE_PROCESS="./Telemetry/Telemetry"
+export TELE_DATA_FILE="./Telemetry/TeleData"
+export TELE_SEND_FILE="./Telemetry/TelemetryDataSend"
+
+# Splitting and Serial Transmission Settings
+export DELIM_SEND=";"
+export DELIM_RECEIVE=";"
+export DATA_LENGTH=1
+export SIGNAL_DATA="S"
+export SIGNAL_DATA_LENGTH=1
+
+# Tracking using Image Processing
+export TRACK_EXEC="./Tracking/Tracking"
+
+# We need to define a syntax for the received data. We define the order for the data to be received here.
+# Present status: xxDxxDxxDxx. D: DELIM
+# Ultra1;Ultra2;Ultra3;Ultra4
+export NUMBER_OF_PARAMETERS_REC=4
+export DELIM_1_POS_REC=2
+export DELIM_2_POS_REC=0
+export DELIM_3_POS_REC=0
+export DELIM_4_POS_REC=0
+export DATA_SEND_5_REC=0
+
+# We need to define a syntax for the transmitted data. We define the order for the data to be sent here.
+# Present status: xxxDxxx. D: DELIM
+# LeftPWM;RightPWM
+export NUMBER_OF_PARAMETERS_REC=4
+export DELIM_1_POS_REC=2
+export DELIM_2_POS_REC=0
+export DELIM_3_POS_REC=0
+export DELIM_4_POS_REC=0
+export DATA_SEND_5_REC=0
+
+# Signals Settings
+export SERIAL_SCRIPT_READY_SIGNAL=1
+export MAIN_HAS_DATA_SIGNAL=2
+export TELE_SCRIPT_READY_SIGNAL=3
+export MAIN_WANTS_TELE_DATA_SIGNAL=4
+export MAIN_HAS_TELE_DATA_SIGNAL=5
+export MAIN_WANTS_DATA_SIGNAL=6
+
+# PID Constants
+export PID_SAMPLE_TIME=1
+
+# Motor Constants
+export PWM_SCALING_FACTOR=1
+
+# Executable Settings
+export MAIN_EXEC="./Main"
+
+# Source Files Settings
+export ENVIRONMENT_VARIABLES="./EnvironmentVariables"
+export ENVIRONMENT_CONSTANTS="./EnvironmentConstants"
+
+export GPIO_FUNCTIONS="./GPIO/GPIOFunctions"
+
+export SERIAL_PROCESS="./Serial/Serial"
+
+export SIGNAL_FUNCTIONS="./Signals/SignalFunctions"
+export SEND_SIGNAL="SendSignal"
+
+export SPLIT_FUNCTIONS="./Split/SplitFunctions"
+
+export OBSTACLE_AVOIDANCE="./ObstacleAvoidance/ObstacleAvoidance"
+export IMU_VALUES="./IMU/IMUValues"
+export IMU_GETVALUES="./IMU/GetValues"
+#************************************************
