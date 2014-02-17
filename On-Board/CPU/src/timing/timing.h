@@ -22,7 +22,7 @@ struct timing {
 	
 	clock_t get_time();
 	void set_timer(clock_t timeout);
-	void disable_timer;
+	void disable_timer();
 
 }
 
