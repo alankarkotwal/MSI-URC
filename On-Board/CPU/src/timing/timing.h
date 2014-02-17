@@ -17,9 +17,12 @@ struct timing {
 
 	clock_t old_time;
 	clock_t present_time;
-	
+	clock_t countdown_time;
+	bool time_up;
 	
 	clock_t get_time();
+	void set_timer(clock_t timeout);
+	void disable_timer;
 
 }
 
