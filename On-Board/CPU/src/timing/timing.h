@@ -9,9 +9,15 @@ Log follows:
 
 \*********************************************************************************************/
 
+#ifndef _TIMING_H
+#define _TIMING_H
+
+
 #include<time.h>
 
+
 #define F_CPU 700000000
+
 
 struct timing {
 
@@ -28,4 +34,4 @@ struct timing {
 
 }
 
-// The end.
+#endif
