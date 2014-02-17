@@ -11,10 +11,16 @@ Log follows:
 
 #include<time.h>
 
-struct timer {
+#define F_CPU 700000000
 
-	int old_time;
-	int present_time;
+struct timing {
+
+	clock_t old_time;
+	clock_t present_time;
 	
+	
+	clock_t get_time();
 
 }
+
+// The end.
