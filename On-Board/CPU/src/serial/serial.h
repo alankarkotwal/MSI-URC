@@ -33,7 +33,7 @@ struct serial_device {
 	struct termios old_stdio;
 	
 	struct timer timeout_read;
-//struct timer timeout_write;
+	struct timer timeout_write;
 		
 	void open_port(char* port_name);
 	void configure_port(int baud_rate);
