@@ -7,7 +7,9 @@ Log: Refer to the header.
 
 \*********************************************************************************************/
 
+
 #include"serial.h"
+
 
 void serial_device::open_port(char* port) {
 
@@ -65,7 +67,7 @@ void serial_device::flush_port() {
 
 }
 
-void serial_device::write_byte(char data_byte) {
+bool serial_device::write_byte(char data_byte) {
 
 	write(STDOUT_FILENO, &data_byte, 1);
 
@@ -81,7 +83,7 @@ char serial_device::read_byte() {
 }
 
 
-void serial_device::read_bytes(char* buf, int num) { // @Megha: check this, does this need to be passed by reference?
+bool serial_device::read_bytes(char* buf, int num) {
 	
 	for(int i=0;i<num;i++) {
 	
@@ -92,7 +94,7 @@ void serial_device::read_bytes(char* buf, int num) { // @Megha: check this, does
 }
 
 
-void serial_device::write_bytes(char* buf) {
+bool serial_device::write_bytes(char* buf) {
 	
 	for(int i=0;i<strlen(buf);i++) {
 	

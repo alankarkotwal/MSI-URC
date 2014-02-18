@@ -41,10 +41,10 @@ struct serial_device {
 		
 	void open_port(char* port_name);
 	void configure_port(int baud_rate);
-	void write_byte(char data);
+	bool write_byte(char data);
 	char read_byte();
-	void write_bytes(char*);
-	void read_bytes(char* buf, int num);
+	bool write_bytes(char*);
+	bool read_bytes(char* buf, int num);
 	void flush_port();
 	void close_port();
 
