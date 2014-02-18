@@ -10,7 +10,6 @@ Log follows:
 
 \*********************************************************************************************/
 
-
 #ifndef _SERIAL_H
 #define _SERIAL_H
 
@@ -22,10 +21,7 @@ Log follows:
 #include<termios.h>
 #include"../timing/timing.h"
 
-// TODO: define baudrate constants. open(...) takes some predefined constants. Like 9600 is B9600 which is actually defined as 13.
-// Can agree to use these as they are, but can lead to debugging pains if someone else is trying to use the code.
-// @Megha: Have a look at this ^. This is how you mark todos (shows up in gedit), its convenient.
-// And @Megha again: Document this based on comments.
+#define SERIAL_TIMEOUT F_CPU/1000
 
 struct serial_device {
 
@@ -37,13 +33,13 @@ struct serial_device {
 	struct termios old_stdio;
 	
 	struct timer timeout_read;
-	struct timer timeout_write;
+//struct timer timeout_write;
 		
 	void open_port(char* port_name);
 	void configure_port(int baud_rate);
-	bool write_byte(char data);
+	void write_byte(char data);
 	char read_byte();
-	bool write_bytes(char*);
+	void write_bytes(char*);
 	bool read_bytes(char* buf, int num);
 	void flush_port();
 	void close_port();

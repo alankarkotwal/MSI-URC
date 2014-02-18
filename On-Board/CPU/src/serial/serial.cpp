@@ -67,7 +67,7 @@ void serial_device::flush_port() {
 
 }
 
-bool serial_device::write_byte(char data_byte) {
+void serial_device::write_byte(char data_byte) {
 
 	write(STDOUT_FILENO, &data_byte, 1);
 
@@ -76,8 +76,17 @@ bool serial_device::write_byte(char data_byte) {
 
 char serial_device::read_byte() {
 	
+	timeout_read.start();
+	timeout_read.set_timer(SERIAL_TIMEOUT);
 	char data;
-	while(read(fd, &data, 1)<0);
+	while(read(fd, &data, 1)<0) {
+	
+		if(timeout_read.check_timer()) {
+		
+			return NULL;
+	
+	}
+
 	return data;
 
 }
@@ -88,13 +97,20 @@ bool serial_device::read_bytes(char* buf, int num) {
 	for(int i=0;i<num;i++) {
 	
 		buf[i]=read_byte();
+		if(buf[i]==NULL) {
+		
+			return -1;
+		
+		}
 	
 	}
+	
+	return 1;
 	
 }
 
 
-bool serial_device::write_bytes(char* buf) {
+void serial_device::write_bytes(char* buf) {
 	
 	for(int i=0;i<strlen(buf);i++) {
 	
