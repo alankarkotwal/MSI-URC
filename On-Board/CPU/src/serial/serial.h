@@ -20,6 +20,7 @@ Log follows:
 #include<unistd.h>
 #include<fcntl.h>
 #include<termios.h>
+#include"../timing/timing.h"
 
 // TODO: define baudrate constants. open(...) takes some predefined constants. Like 9600 is B9600 which is actually defined as 13.
 // Can agree to use these as they are, but can lead to debugging pains if someone else is trying to use the code.
@@ -34,6 +35,9 @@ struct serial_device {
 	struct termios tio;
 	struct termios stdio;
 	struct termios old_stdio;
+	
+	struct timer timeout_read;
+	struct timer timeout_write;
 		
 	void open_port(char* port_name);
 	void configure_port(int baud_rate);
