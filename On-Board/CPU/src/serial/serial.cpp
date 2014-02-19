@@ -11,6 +11,9 @@ Log: Refer to the header.
 #include"serial.h"
 
 
+// TODO: Need to look up built-in serial timeouts. This implementation wastes CPU resources!
+
+
 void serial_device::open_port(char* port) {
 
 	fd=open(port, O_RDWR | O_NONBLOCK);
