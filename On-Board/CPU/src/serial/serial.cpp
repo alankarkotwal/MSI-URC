@@ -12,6 +12,8 @@ Log: Refer to the header.
 
 
 // TODO: Need to look up built-in serial timeouts. This implementation wastes CPU resources!
+// Found this: http://stackoverflow.com/questions/10522277/how-can-i-implement-timeout-for-read-when-reading-from-a-serial-port-c-c
+// @Aman: Exactly what we're looking for, right?
 
 
 void serial_device::open_port(char* port) {
