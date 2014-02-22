@@ -19,23 +19,28 @@ Log follows:
 #include<unistd.h>
 #include<fcntl.h>
 #include<termios.h>
-#include"../timing/timing.h"
+#include <iostream>
+#include <cstring>
+#include <string>
+#include "timing.h"
+using namespace std;
 
 #define SERIAL_TIMEOUT F_CPU/1000
 
-struct serial_device {
+class serial_device {
 
 	int fd;
-	char port_name[20];
+	string port_name;
 	int baud_rate;
 	struct termios tio;
 	struct termios stdio;
 	struct termios old_stdio;
 	
-	struct timer timeout_read;
-	struct timer timeout_write;
-		
-	void open_port(char* port_name);
+	timer timeout_read;
+	timer timeout_write;
+
+  public:
+	bool open_port(string port_name);
 	void configure_port(int baud_rate);
 	void write_byte(char data);
 	char read_byte();

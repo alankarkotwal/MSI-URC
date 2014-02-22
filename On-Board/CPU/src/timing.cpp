@@ -11,14 +11,14 @@ Log: Refer to the header.
 #include"timing.h"
 
 
-void timing::start() {
+void timer::start() {
 
 	old_time=clock();
 
 }
 
 
-clock_t timing::get_time() {
+clock_t timer::get_time() {
 
 	present_time=clock();
 	return present_time;
@@ -26,7 +26,7 @@ clock_t timing::get_time() {
 }
 
 
-void timing::set_timer(clock_t timeout) {
+void timer::set_timer(clock_t timeout) {
 
 	old_time=clock();
 	countdown_time=timeout;
@@ -35,7 +35,7 @@ void timing::set_timer(clock_t timeout) {
 }
 
 
-bool timing::check_timer() {
+bool timer::check_timer() {
 
 	if(enable) {
 	
@@ -45,13 +45,13 @@ bool timing::check_timer() {
 	
 		if(diff>=countdown_time) {
 
-			return TRUE;
+			return true;
 
 		}
 
 		else {
 
-			return FALSE;
+			return false;
 
 		}
 		
@@ -59,16 +59,16 @@ bool timing::check_timer() {
 	
 	else {
 	
-		return FALSE;
+		return false;
 	
 	}
 
 }
 
 
-void timing::disable_timer() {
+void timer::disable_timer() {
 
-	enable=FALSE;
+	enable=false;
 
 }
 

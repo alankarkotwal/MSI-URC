@@ -1,6 +1,6 @@
 /* Function definitions for the Wheel structure */
 
-#include"Wheel.h"
+#include "wheel.h"
 
 Wheel::Wheel()
 {

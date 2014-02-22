@@ -1,3 +1,3 @@
-#include"Joints.cpp"
+#include "joints.h"
 
 // Function declarations

@@ -12,26 +12,22 @@ Log follows:
 #ifndef _TIMING_H
 #define _TIMING_H
 
-
 #include<time.h>
-
 
 #define F_CPU 700000000
 
-
-struct timing {
-
+class timer {
 	clock_t old_time;
 	clock_t present_time;
 	clock_t countdown_time;
 	bool enable;
 	
+  public:
 	void start();
 	clock_t get_time();
 	void set_timer(clock_t timeout);
 	bool check_timer();
 	void disable_timer();
-
-}
+};
 
 #endif

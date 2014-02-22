@@ -8,7 +8,7 @@ Log: Refer to the header.
 \*********************************************************************************************/
 
 
-#include"serial.h"
+#include "serial.h"
 
 
 // TODO: Need to look up built-in serial timeouts. This implementation wastes CPU resources!
@@ -16,18 +16,17 @@ Log: Refer to the header.
 // @Aman: Exactly what we're looking for, right?
 
 
-void serial_device::open_port(char* port) {
+bool serial_device::open_port(string port) {
 
-	fd=open(port, O_RDWR | O_NONBLOCK);
-	port_name=port;
+	fd=open(port.c_str(), O_RDWR | O_NONBLOCK);
+	port_name = port;
 	
 	if(fd==-1) {
 
-		printf("serial_device::open_port: Unable to open serial device %s.", port);
-		return -1;
-
+		cout<< "serial_device::open_port: Unable to open serial device " << port << endl;
+		return false;
 	}
-	
+	return true;
 }
 
 
@@ -86,9 +85,8 @@ char serial_device::read_byte() {
 	char data;
 	while(read(fd, &data, 1)<0) {
 	
-		if(timeout_read.check_timer()) {
-		
-			return NULL;
+		if(timeout_read.check_timer())
+			return '\0';
 	
 	}
 

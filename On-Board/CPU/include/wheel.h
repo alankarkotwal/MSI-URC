@@ -15,7 +15,7 @@
 #define RIGHT_MIN 5
 #define RIGHT_BACK 6
 
-struct Wheel
+class Wheel
 {
 	int Radius;
 	int Speed;
@@ -25,6 +25,7 @@ struct Wheel
 	int Torque;
 	int EncoderDistance;
 
+  public:
 	Wheel();
 	Wheel(int WheelType);
 };
