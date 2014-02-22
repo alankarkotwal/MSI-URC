@@ -42,9 +42,8 @@ class serial_device {
   public:
 	bool open_port(string port_name);
 	void configure_port(int baud_rate);
-	void write_byte(char data);
 	char read_byte();
-	void write_bytes(char*);
+	void write_bytes(char* buf, int length);
 	bool read_bytes(char* buf, int num);
 	void flush_port();
 	void close_port();

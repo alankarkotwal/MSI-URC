@@ -14,7 +14,7 @@ RES  = results
 _DEPS = arm.h joints.h rover.h serial.h timing.h wheel.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = rover.o arm.o joints.o serial.o timing.o wheel.o
+_OBJ = rover.o arm.o joints.o serial.o timing.o wheel.o main.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
@@ -26,7 +26,7 @@ dir:
 	mkdir -p $(ODIR)
 
 $(ODIR)/main: $(OBJ)
-	$(CC) -I$(IDIR) -o $@ $^ $(SDIR)/main.cpp $(PROFILE) $(LIBS)
+	$(CC) -I$(IDIR) -o $@ $^ $(PROFILE) $(LIBS)
 
 clean:
 	rm -rf $(ODIR) *~ $(INCDIR)/*~
