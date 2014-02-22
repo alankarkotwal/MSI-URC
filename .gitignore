@@ -23,6 +23,10 @@
 *.hex
 
 # Temporary files
-.save
+*.save
 *~
 .*
+
+*.tar
+*.zip
+
