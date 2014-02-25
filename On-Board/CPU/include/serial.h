@@ -13,16 +13,17 @@ Log follows:
 #ifndef _SERIAL_H
 #define _SERIAL_H
 
-#include<string.h>
-#include<stdlib.h>
-#include<stdio.h>
-#include<unistd.h>
-#include<fcntl.h>
-#include<termios.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <termios.h>
 #include <iostream>
 #include <cstring>
 #include <string>
 #include "timing.h"
+
 using namespace std;
 
 #define SERIAL_TIMEOUT F_CPU/1000
@@ -49,7 +50,5 @@ class serial_device {
 	void close_port();
 
 };
-
-serial_device arduino_mega, gps, xbee;
 
 #endif

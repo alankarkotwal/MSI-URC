@@ -4,17 +4,17 @@ IDIR = include
 CC = g++
 DEBUG =
 PROFILE =
-CFLAGS = -Wall -c $(DEBUG) -I$(IDIR) $(PROFILE)
+CFLAGS = -Wall -w -c $(DEBUG) -I$(IDIR) $(PROFILE)
 
 SDIR = src
 ODIR = bin
 LIBS = -lm -lpthread
 RES  = results
 
-_DEPS = arm.h joints.h rover.h serial.h timing.h wheel.h
+_DEPS = arm.h joints.h rover.h serial.h timing.h wheel.h i2c.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = rover.o arm.o joints.o serial.o timing.o wheel.o main.o
+_OBJ = rover.o arm.o joints.o serial.o timing.o wheel.o i2c.o main.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)

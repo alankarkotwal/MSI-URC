@@ -1,7 +1,10 @@
-#include <iostream>
+#include<iostream>
+#include"i2c.h"
+
 using namespace std;
 
-int main()
-{
+int main(){
+
+// Write your code here.
 
 }
