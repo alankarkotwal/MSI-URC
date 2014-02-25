@@ -43,6 +43,11 @@ class i2c_device {
 	float Ax, Ay, Az;
 	float veloX, veloY, veloZ;
 
+	int sensor_sign[4];
+	float gyr_raw;
+	float G_GAIN
+	float G_offset[4];
+
   public:
 
   	void enable();
