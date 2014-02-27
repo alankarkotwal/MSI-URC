@@ -31,9 +31,9 @@ void i2c_device::readBlock(uint8_t command, uint8_t size, uint8_t *data) {
 void i2c_device::enable()
 {
 
-  __u16 block[I2C_SMBUS_BLOCK_MAX];
+  // __u16 block[I2C_SMBUS_BLOCK_MAX];
 
-  int res, bus,  size;
+  // int res, bus,  size;
 
   char i2c_filename[20];
   sprintf(i2c_filename, "/dev/i2c-%d", 1);
@@ -61,6 +61,7 @@ void i2c_device::enable()
 
 void i2c_device::selectDevice(int i2c_file, int addr) {
     
+    /*
     char device[3];
     if (addr == 1) {
         device[1] = 'L';
@@ -74,7 +75,7 @@ void i2c_device::selectDevice(int i2c_file, int addr) {
         device[3] = 'M';
     }
 
-
+    */
     if (ioctl(i2c_file, I2C_SLAVE, addr) < 0) {
 /*      fprintf(stderr,
         "Error: Could not select device  0x%02x: %s\n",
