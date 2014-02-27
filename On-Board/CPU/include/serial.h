@@ -26,7 +26,7 @@ Log follows:
 
 using namespace std;
 
-#define SERIAL_TIMEOUT F_CPU/1000
+#define SERIAL_TIMEOUT (F_CPU/1000)
 
 class serial_device {
 

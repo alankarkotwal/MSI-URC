@@ -39,13 +39,11 @@ class i2c_device {
 	float rate_gyr_x, rate_gyr_y, rate_gyr_z;
 	float intgX, intgY, intgZ;
 	float angleX, angleY, angleZ;
-	float accel_x, accel_y, accel_z;
 	float Ax, Ay, Az;
 	float veloX, veloY, veloZ;
 
   int timeNow, timeold;
 
-	int sensor_sign[9];
 	float G_GAIN;
 	float G_offset[3];
 
@@ -54,17 +52,14 @@ class i2c_device {
   	void enable();
   	void readBlock(uint8_t command, uint8_t size, uint8_t *data);
   	void selectDevice(int i2c_file, int addr);
-  	void readACC(int *a);
-  	void readMAG(int *m);
+  	void read_accel();
+  	void read_mag();
   	void read_gyro();
-  	void writeAccReg(uint8_t reg, uint8_t value);
-  	void writeMagReg(uint8_t reg, uint8_t value);
-  	void writeGyrReg(uint8_t reg, uint8_t value);
+  	void write_acc_reg(uint8_t reg, uint8_t value);
+  	void write_mag_reg(uint8_t reg, uint8_t value);
+  	void write_gyr_reg(uint8_t reg, uint8_t value);
   	void gyr_angles();
-  	void accel_calc();
   	void velo_calc();
-    void readAcc(int*);
-    void read_accel();
   	float Dt();
     int mymillis();
 
