@@ -20,7 +20,7 @@ void timer::start() {
 
 clock_t timer::get_time() {
 
-	present_time=clock();
+	present_time=clock()/F_CPU;
 	return present_time;
 
 }

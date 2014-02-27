@@ -50,7 +50,7 @@ void i2c_device::selectDevice(int i2c_file, int addr) {
 }
 
 
-void i2c_device::readACC(int  *a) {
+void i2c_device::readAcc(int *a) {
   
   uint8_t block[6];
   selectDevice(i2c_file,ACC_ADDRESS);
@@ -152,12 +152,14 @@ void i2c_device::enable()
     writeGyrReg(L3G_CTRL_REG1, 0b00001111); // Normal power mode, all axes enabled
     writeGyrReg(L3G_CTRL_REG4, 0b00110000); // Continuos update, 2000 dps full scale
 
+    i2c_timer.start();
+    timeold=i2c_timer.get_time();
 }
 
 
  // Calculation of Dt
 float i2c_device::Dt() {
-  timeNow=millis();
+  int timeNow=i2c_timer.get_time();
   float deltaT=(timeNow-timeold)/1000;
   timeold=timeNow;
   return deltaT;
@@ -172,9 +174,20 @@ float i2c_device::Dt() {
 }
 
 
+void i2c_device::read_accel() {
+  readAcc();
+  AN[3] = compass.a.x;
+  AN[4] = compass.a.y;
+  AN[5] = compass.a.z;
+  accel_x = (sensor_sign[3] * AN[3])/25;// - AN_OFFSET[3]);
+  accel_y = (sensor_sign[4] * AN[4])/25;// - AN_OFFSET[4]);
+  accel_z = (sensor_sign[5] * AN[5])/26;// - AN_OFFSET[5]);
+}
+
+
 // gyroangles calculation
 void i2c_device::gyr_angles() {
-  startInt = mymillis();
+  int startInt = mymillis();
     
   //Each loop should be at least 250ms.
 
@@ -219,6 +232,13 @@ void i2c_device::velo_calc() {
   veloX= veloX+(Ax*Dt());
   veloY= veloY+(Ay*Dt());
   veloZ= veloZ+(Az*Dt());
+}
+
+
+int i2c_device::mymillis() {
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  return (tv.tv_sec) * 1000 + (tv.tv_usec)/1000;
 }
 
 // The end.

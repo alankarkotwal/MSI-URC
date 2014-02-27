@@ -23,6 +23,7 @@ Log follows:
 #include <cstring>
 #include <string>
 #include <time.h>
+#include <sys/time.h>
 #include "L3G.h"
 #include "LSM303.h"
 #include "i2c-dev.h"
@@ -35,7 +36,6 @@ class i2c_device {
 	timer i2c_timer;
 
 	int i2c_file;
-	float startInt;
 	float rate_gyr_x, rate_gyr_y, rate_gyr_z;
 	float intgX, intgY, intgZ;
 	float angleX, angleY, angleZ;
@@ -43,9 +43,11 @@ class i2c_device {
 	float Ax, Ay, Az;
 	float veloX, veloY, veloZ;
 
+  int timeNow, timeold;
+
 	int sensor_sign[4];
 	float gyr_raw;
-	float G_GAIN
+	float G_GAIN;
 	float G_offset[4];
 
   public:
@@ -63,7 +65,10 @@ class i2c_device {
   	void gyr_rates();
   	void accel_calc();
   	void velo_calc();
+    void readAcc(int*);
+    void read_accel();
   	float Dt();
+    int mymillis();
 
 };
 
