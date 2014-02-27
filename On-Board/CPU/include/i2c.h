@@ -45,10 +45,9 @@ class i2c_device {
 
   int timeNow, timeold;
 
-	int sensor_sign[4];
-	float gyr_raw;
+	int sensor_sign[9];
 	float G_GAIN;
-	float G_offset[4];
+	float G_offset[3];
 
   public:
 
@@ -57,12 +56,11 @@ class i2c_device {
   	void selectDevice(int i2c_file, int addr);
   	void readACC(int *a);
   	void readMAG(int *m);
-  	void readGYR(int *g);
+  	void read_gyro();
   	void writeAccReg(uint8_t reg, uint8_t value);
   	void writeMagReg(uint8_t reg, uint8_t value);
   	void writeGyrReg(uint8_t reg, uint8_t value);
   	void gyr_angles();
-  	void gyr_rates();
   	void accel_calc();
   	void velo_calc();
     void readAcc(int*);

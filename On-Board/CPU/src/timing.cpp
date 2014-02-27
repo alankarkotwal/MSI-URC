@@ -8,7 +8,7 @@ Log: Refer to the header.
 \*********************************************************************************************/
 
 
-#include"timing.h"
+#include "timing.h"
 
 
 void timer::start() {

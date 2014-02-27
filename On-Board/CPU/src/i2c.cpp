@@ -75,7 +75,7 @@ void i2c_device::readMAG(int  *m) {
 }
 
 
-void i2c_device::readGYR(int *g) {
+void i2c_device::read_gyro() {
 
   uint8_t block[6];
 
@@ -83,9 +83,13 @@ void i2c_device::readGYR(int *g) {
 
   readBlock(0x80 | L3G_OUT_X_L, sizeof(block), block);
 
-    *g = (int16_t)(block[1] << 8 | block[0]);
-    *(g+1) = (int16_t)(block[3] << 8 | block[2]);
-    *(g+2) = (int16_t)(block[5] << 8 | block[4]);
+  *g = (int16_t)(block[1] << 8 | block[0]);
+  *(g+1) = (int16_t)(block[3] << 8 | block[2]);
+  *(g+2) = (int16_t)(block[5] << 8 | block[4]);
+
+  rate_gyr_x = ((sensor_sign[1]) * *(g) * G_GAIN)-G_offset[1];
+  rate_gyr_y = ((sensor_sign[2]) * *(g+1) * G_GAIN)-G_offset[2];
+  rate_gyr_z = ((sensor_sign[3]) * *(g+2) * G_GAIN)-G_offset[3];
 
 }
 
@@ -165,13 +169,6 @@ float i2c_device::Dt() {
   return deltaT;
 }     
  //Convert Gyro raw to degrees per second
-
-
- void i2c_device::gyr_rates() {     
-  rate_gyr_x =( (sensor_sign[1]) *gyr_raw * G_GAIN)-G_offset[1];
-  rate_gyr_y = ((sensor_sign[2]) *(gyr_raw+1) * G_GAIN)-G_offset[2];
-  rate_gyr_z = ((sensor_sign[3]) *(gyr_raw+2) * G_GAIN)-G_offset[3];
-}
 
 
 void i2c_device::read_accel() {
