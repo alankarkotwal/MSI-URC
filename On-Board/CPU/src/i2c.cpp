@@ -13,8 +13,8 @@ Log: Refer to the header.
 #include "L3G.h"
 #include "LSM303.h"
 
-extern int sensor_sign[9] = {1,1,1,1,1,1,1,1,1}; 
-extern double AN[6]={0,0,0,0,0,0};
+static int sensor_sign[9] = {1,1,1,1,1,1,1,1,1}; 
+static double AN[6]={0,0,0,0,0,0};
 
 
 void i2c_device::readBlock(uint8_t command, uint8_t size, uint8_t *data) {
