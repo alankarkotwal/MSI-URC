@@ -84,6 +84,42 @@ void i2c_device::selectDevice(int i2c_file, int addr) {
 }
 
 
+void i2c_device::write_acc_reg(uint8_t reg, uint8_t value)
+{
+    selectDevice(i2c_file,ACC_ADDRESS);
+    int result = i2c_smbus_write_byte_data(i2c_file, reg, value);
+    if (result == -1)
+    {
+        printf ("Failed to write byte to I2C Acc.");
+        exit(1);
+    }
+}
+
+
+void i2c_device::write_mag_reg(uint8_t reg, uint8_t value)
+{
+    selectDevice(i2c_file,MAG_ADDRESS);
+    int result = i2c_smbus_write_byte_data(i2c_file, reg, value);
+    if (result == -1)
+    {
+        printf("Failed to write byte to I2C Mag.");
+        exit(1);
+    }
+}
+
+
+void i2c_device::write_gyr_reg(uint8_t reg, uint8_t value)
+{
+    selectDevice(i2c_file,GYR_ADDRESS);
+  int result = i2c_smbus_write_byte_data(i2c_file, reg, value);
+    if (result == -1)
+    {
+        printf("Failed to write byte to I2C Gyr.");
+        exit(1);
+    }
+}
+
+
 void i2c_device::read_accel() {
 
   int a[3];
@@ -134,6 +170,10 @@ void i2c_device::read_mag() {
   *m = (int16_t)(block[1] | block[0] << 8);
   *(m+1) = (int16_t)(block[5] | block[4] << 8) ;
   *(m+2) = (int16_t)(block[3] | block[2] << 8) ;
+
+  bearing_x = sensor_sign[6] * *m;
+  bearing_y = sensor_sign[7] * *(m+1);
+  bearing_z = sensor_sign[8] * *(m+2);
 }
 
 
@@ -157,54 +197,21 @@ void i2c_device::read_gyro() {
 }
 
 
-void i2c_device::write_acc_reg(uint8_t reg, uint8_t value)
-{
-    selectDevice(i2c_file,ACC_ADDRESS);
-    int result = i2c_smbus_write_byte_data(i2c_file, reg, value);
-    if (result == -1)
-    {
-        printf ("Failed to write byte to I2C Acc.");
-        exit(1);
-    }
-}
-
-
-void i2c_device::write_mag_reg(uint8_t reg, uint8_t value)
-{
-    selectDevice(i2c_file,MAG_ADDRESS);
-    int result = i2c_smbus_write_byte_data(i2c_file, reg, value);
-    if (result == -1)
-    {
-        printf("Failed to write byte to I2C Mag.");
-        exit(1);
-    }
-}
-
-
-void i2c_device::write_gyr_reg(uint8_t reg, uint8_t value)
-{
-    selectDevice(i2c_file,GYR_ADDRESS);
-  int result = i2c_smbus_write_byte_data(i2c_file, reg, value);
-    if (result == -1)
-    {
-        printf("Failed to write byte to I2C Gyr.");
-        exit(1);
-    }
-}
-
 
  // Calculation of Dt
 float i2c_device::Dt() {
+
   int timeNow=i2c_timer.get_time();
   float deltaT=(timeNow-timeold)/1000;
   timeold=timeNow;
   return deltaT;
-}     
- //Convert Gyro raw to degrees per second
+
+}
 
 
 // gyroangles calculation
 void i2c_device::gyr_angles() {
+  
   int startInt = mymillis();
     
   //Each loop should be at least 250ms.

@@ -6,6 +6,7 @@ Megha Gupta, Alankar Kotwal
 Log follows:
 
 1) 26 Feb 2014: Alankar created this file with the class and functions. Compiled as a library.
+2) 27 Feb 2014: Alankar corrected all functions and debugged the library.
 
 \*********************************************************************************************/
 
@@ -41,6 +42,7 @@ class i2c_device {
 	float angleX, angleY, angleZ;
 	float Ax, Ay, Az;
 	float veloX, veloY, veloZ;
+  float bearing_x, bearing_y, bearing_z;
 
   int timeNow, timeold;
 
