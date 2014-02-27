@@ -1,2 +1,0 @@
-mkdir -p bin
-g++ -Wall -c  -Iinclude  -o bin/i2c.o src/i2c.cpp
