@@ -56,6 +56,11 @@ void i2c_device::enable()
 
     i2c_timer.start();
     timeold=i2c_timer.get_time();
+
+    G_GAIN=0.09;
+    G_offset[0]=20;
+    G_offset[1]=10;
+    G_offset[2]=13;
 }
 
 
@@ -243,5 +248,6 @@ int i2c_device::mymillis() {
   gettimeofday(&tv, NULL);
   return (tv.tv_sec) * 1000 + (tv.tv_usec)/1000;
 }
+
 
 // The end.
