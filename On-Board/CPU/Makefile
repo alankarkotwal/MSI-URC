@@ -4,7 +4,7 @@ IDIR = include
 CC = g++
 DEBUG =
 PROFILE =
-CFLAGS = -Wall -c $(DEBUG) -I$(IDIR) $(PROFILE)
+CFLAGS = -Wall -c -w $(DEBUG) -I$(IDIR) $(PROFILE)
 
 SDIR = src
 ODIR = bin
