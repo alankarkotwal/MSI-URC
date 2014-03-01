@@ -54,8 +54,7 @@ void i2c_device::enable()
     write_gyr_reg(L3G_CTRL_REG1, 0b00001111); // Normal power mode, all axes enabled
     write_gyr_reg(L3G_CTRL_REG4, 0b00110000); // Continuos update, 2000 dps full scale
 
-    i2c_timer.start();
-    timeold=i2c_timer.get_time();
+    i2c_timer.init_timer();
 
     G_GAIN=0.09;
     G_offset[0]=20;
@@ -207,10 +206,7 @@ void i2c_device::read_gyro() {
  // Calculation of Dt
 float i2c_device::Dt() {
 
-  int timeNow=i2c_timer.get_time();
-  float deltaT=(timeNow-timeold)/1000;
-  timeold=timeNow;
-  return deltaT;
+  return i2c_timer.time_ms();
 
 }
 

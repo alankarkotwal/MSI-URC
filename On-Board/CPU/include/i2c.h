@@ -7,6 +7,7 @@ Log follows:
 
 1) 26 Feb 2014: Alankar created this file with the class and functions. Compiled as a library.
 2) 27 Feb 2014: Alankar corrected all functions and debugged the library.
+3) 28 Feb 2014: Final working library complete.
 
 \*********************************************************************************************/
 
@@ -36,7 +37,7 @@ class i2c_device {
 
   public:
 
-  	timer i2c_timer;
+  	timeout i2c_timer;
 
   	int i2c_file;
   	float rate_gyr_x, rate_gyr_y, rate_gyr_z;

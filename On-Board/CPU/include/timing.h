@@ -12,22 +12,28 @@ Log follows:
 #ifndef _TIMING_H
 #define _TIMING_H
 
-#include<time.h>
+#include <sys/time.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/shm.h>
+#include <termios.h>
+#include <string.h>
+#include <iostream>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
 
-#define F_CPU 700000000
+class timeout {
 
-class timer {
-	clock_t old_time;
-	clock_t present_time;
-	clock_t countdown_time;
-	bool enable;
-	
-  public:
-	void start();
-	clock_t get_time();
-	void set_timer(clock_t timeout);
-	bool check_timer();
-	void disable_timer();
+    public:
+        timeout();
+        void init_timer();
+        unsigned long int time_ms();
+
+    private:    
+        struct timeval start_time;
+        struct timeval prev_time;
+
 };
 
 #endif

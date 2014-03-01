@@ -11,65 +11,36 @@ Log: Refer to the header.
 #include "timing.h"
 
 
-void timer::start() {
-
-	old_time=clock();
+timeout::timeout(){
 
 }
 
 
-clock_t timer::get_time() {
+void timeout::init_timer() {
 
-	present_time=clock()/F_CPU;
-	return present_time;
-
-}
-
-
-void timer::set_timer(clock_t timeout) {
-
-	old_time=clock();
-	countdown_time=timeout;
-	enable=1;
+    gettimeofday(&start_time, NULL);
+    gettimeofday(&prev_time, NULL);
 
 }
 
 
-bool timer::check_timer() {
+unsigned long int timeout::time_ms() {
 
-	if(enable) {
-	
-		clock_t diff;
-		present_time=clock();
-		diff=present_time-old_time;
-	
-		if(diff>=countdown_time) {
+    struct timeval current_time;
 
-			return true;
+    int sec,usec;
 
-		}
+    gettimeofday(&current_time, NULL);
+    sec=current_time.tv_sec-prev_time.tv_sec;
+    usec=current_time.tv_usec-prev_time.tv_usec;
+    if (usec<0) {
+        usec=1000000-prev_time.tv_usec+current_time.tv_usec;
+        sec--;
+    }
 
-		else {
-
-			return false;
-
-		}
-		
-	}
-	
-	else {
-	
-		return false;
-	
-	}
-
+    prev_time=current_time;
+    return sec*1000+usec/1000;
 }
 
-
-void timer::disable_timer() {
-
-	enable=false;
-
-}
 
 // The end.
