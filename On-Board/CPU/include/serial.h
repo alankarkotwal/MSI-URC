@@ -12,41 +12,31 @@ Log follows:
 
 \*********************************************************************************************/
 
+
 #ifndef _SERIAL_H
 #define _SERIAL_H
 
-#include "timing.h"
-#include <sys/time.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <sys/shm.h>
-#include <termios.h>
-#include <string.h>
-#include <iostream>
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <sys/ioctl.h>
+#include <termios.h>
+#include <strings.h>
 
 
 class serial_device {
+	int fd;
 
-    public:
-        serial_device();
-        ~serial_device();
+	public:
 
-        char open_port(const char *device, const unsigned int baud_rate=B9600);
-        void close_port();
-        char write_byte(char);
-        char read_byte(char *data, const unsigned int timeout_ms=NULL);
-        int available();
-        char write_bytes (const void *buffer, const unsigned int number_bytes);
-        int read_bytes(void *buffer, unsigned int max_bytes, const unsigned int timeout_ms=NULL);
-        void flush_receiver();
-
-    private:
-        int fd;
-
+	serial_device();
+	int open_port(const char* device);
+	void configure_port(int baud_rate);
+	int read_bytes(char* data, int num);
+	int write_bytes(char* buf, ssize_t size);
+	int close_port();
 };
-
 
 #endif

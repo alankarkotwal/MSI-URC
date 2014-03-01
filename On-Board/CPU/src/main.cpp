@@ -1,49 +1,24 @@
-#include<iostream>
-#include"serial.h"
+
+
+#include <iostream>
+#include "serial.h"
 
 using namespace std;
 
-/*
-serial_device arduino(0);
-serial_device xbee(1);
-serial_device gps(2);
-
-
-void signal_handler_IO_arduino(int status) {
-	
-	arduino.wait_flag = 0;
-	cout<<"b"<<endl;
-
-}
-
-void signal_handler_IO_xbee(int status) {
-	
-	xbee.wait_flag = 0;
-
-}
-
-
-void signal_handler_IO_gps(int status) {
-	
-	gps.wait_flag = 0;
-
-}*/
-
 int main() {
 
-/*	arduino.open_port("/dev/ttyUSB1");
-	arduino.configure_port(B9600);
+serial_device arduino;
 
-	char container[50];
+arduino.open_port("/dev/ttyUSB6");
+arduino.configure_port(B9600);
 
-	while(1) {
+char a;
 
-		cout<<"a"<<endl;
-		//arduino.read_bytes(container, 50);
-		//cout<<container<<endl;
-		arduino.write_bytes("aloo",4);
-		usleep(1000000);
-	}
+while(1) {
+   arduino.write_bytes("a", 1);
+   arduino.read_bytes(&a, 1);
+   cout<<a<<endl;
+   usleep(1000000);
+}
 
-	arduino.close_port();*/
 }
