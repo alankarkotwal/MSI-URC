@@ -40,17 +40,16 @@ class i2c_device {
   	timeout i2c_timer;
 
   	int i2c_file;
-  	float rate_gyr_x, rate_gyr_y, rate_gyr_z;
+  	int Gx, Gy, Gz;
   	float intgX, intgY, intgZ;
   	float angleX, angleY, angleZ;
-  	float Ax, Ay, Az;
+  	int Ax, Ay, Az;
   	float veloX, veloY, veloZ;
-    float bearing_x, bearing_y, bearing_z;
+        float bearing_x, bearing_y, bearing_z;
 
-    int timeNow, timeold;
+        int timeNow, timeold;
 
   	float G_GAIN;
-  	float G_offset[3];
 
   	void enable();
   	void readBlock(uint8_t command, uint8_t size, uint8_t *data);

@@ -8,7 +8,7 @@ CFLAGS = -Wall -c -w $(DEBUG) -I$(IDIR) $(PROFILE)
 
 SDIR = src
 ODIR = bin
-LIBS = -lm -lpthread
+LIBS = -lm -lpthread -lwiringPi
 RES  = results
 
 _DEPS = arm.h joints.h rover.h serial.h timing.h wheel.h i2c.h

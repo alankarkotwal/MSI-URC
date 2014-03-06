@@ -13,7 +13,7 @@ Log: Refer to the header.
 #include "L3G.h"
 #include "LSM303.h"
 
-static int sensor_sign[9] = {1,1,1,1,1,1,1,1,1}; 
+static int sensor_sign[9] = {1,1,1,1,1,1,1,1,1};
 static double AN[6]={0,0,0,0,0,0};
 
 
@@ -48,7 +48,7 @@ void i2c_device::enable()
   write_acc_reg(LSM303_CTRL_REG4_A, 0b00101000); // +/- 8G full scale: FS = 10 on DLHC, high resolution output mode
 
  // Enable magnetometer
-    write_mag_reg(LSM303_MR_REG_M, 0x00);  // enable magnometer
+    write_mag_reg(LSM303_MR_REG_M, 0x00);  // enable magnetometer
 
  // Enable Gyro
     write_gyr_reg(L3G_CTRL_REG1, 0b00001111); // Normal power mode, all axes enabled
@@ -56,15 +56,13 @@ void i2c_device::enable()
 
     i2c_timer.init_timer();
 
-    G_GAIN=0.09;
-    G_offset[0]=20;
-    G_offset[1]=10;
-    G_offset[2]=13;
+    G_GAIN=0.098;
+
 }
 
 
 void i2c_device::selectDevice(int i2c_file, int addr) {
-    
+
     /*
     char device[3];
     if (addr == 1) {
@@ -146,19 +144,19 @@ void i2c_device::read_accel() {
     Ax=0;
   }
   else {
-    Ax=(accel_x-9.8)*0.67;
+    Ax=(accel_x-9.8)*0.6;
   }
   if (accel_y<1 && accel_y>-1) {
     Ay=0;
   }
   else {
-    Ay=(accel_y-9.8)*0.67;
+    Ay=(accel_y-9.8)*0.6;
   }
   if (accel_z<1 && accel_z>-1) {
     Az=0;
   }
   else{
-    Az=(accel_z-9.8)*0.67;
+    Az=(accel_z-9.8)*0.6;
   }
 }
 
@@ -195,10 +193,30 @@ void i2c_device::read_gyro() {
   *(g+1) = (int16_t)(block[3] << 8 | block[2]);
   *(g+2) = (int16_t)(block[5] << 8 | block[4]);
 
-  rate_gyr_x = ((sensor_sign[1]) * *(g) * G_GAIN)-G_offset[1];
-  rate_gyr_y = ((sensor_sign[2]) * *(g+1) * G_GAIN)-G_offset[2];
-  rate_gyr_z = ((sensor_sign[3]) * *(g+2) * G_GAIN)-G_offset[3];
+  float rate_gyr_x, rate_gyr_y, rate_gyr_z;
 
+  rate_gyr_x = ((sensor_sign[1]) * *(g) * G_GAIN);
+  rate_gyr_y = ((sensor_sign[2]) * *(g+1) * G_GAIN);
+  rate_gyr_z = ((sensor_sign[3]) * *(g+2) * G_GAIN);
+  
+  if (rate_gyr_x<2 && rate_gyr_x>-2) {
+    Gx=0;
+  }
+  else {
+    Gx=rate_gyr_x;
+  }
+  if (rate_gyr_y<2 && rate_gyr_y>-2) {
+    Gy=0;
+  }
+  else {
+    Gy=rate_gyr_y;
+  }
+  if (rate_gyr_z<2 && rate_gyr_z>-2) {
+    Gz=0;
+  }
+  else{
+    Gz=rate_gyr_z;
+  }
 }
 
 
@@ -219,9 +237,9 @@ void i2c_device::gyr_angles() {
   //Each loop should be at least 250ms.
 
   while(mymillis() - startInt < 250) {
-    intgX=intgX+(rate_gyr_x*Dt());
-    intgY=intgY+(rate_gyr_y*Dt());
-    intgZ=intgZ+(rate_gyr_z*Dt());
+    intgX=intgX+(Gx*Dt());
+    intgY=intgY+(Gy*Dt());
+    intgZ=intgZ+(Gz*Dt());
   }
 
   angleX=angleX+intgX;
