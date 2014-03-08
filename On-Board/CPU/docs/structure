@@ -1,0 +1,99 @@
+Code Structure:
+right now, everything is public. We can make stuff private if needed
+Objects:
+1) struct Wheel: //includes both DC motors and 
+	parameters:
+		radius	//constant for a wheel
+		type	//conatant for a wheel
+		DCmotor_current //via arduino (current sensors)
+		rpm_base //rpm received via xbee from the base station
+		rpm_enc //rpm from corresponding motor encoder, calculation done on arduino
+		rhino_current //via arduino(current sensors)
+		angle_feedback//angle which the servo shows
+		angle_ackerman//angle determined from ackerman calculations
+		 
+	functions:	
+		torque() //calcuate torque fron the above current
+		rpm_imu()//calc rpm from accelerometer and gyroscope values (velocity and stuff)
+		rpm_output()//final rpm to be given to the wheels
+		angle_output()//to be given the the corresponding rhino
+
+2) struct serial_device:
+	parameters:
+		baudrate //baudrate for the port
+		name //"ttyACM" or equivalent
+		number //ttyACM0 
+		fileDescripter
+	functions:
+		read()
+		write()
+		open()
+		configure()
+		close()
+
+3) struct gyroscope: //not yet complete
+	parameters:
+		type
+		other library parameters	
+	functions: 				
+		init() //initialise the gyroscope
+		velocity()
+		orientation()
+
+4) struct accelerometer://not yet complete
+	parameters:
+		from the library
+
+	functions:
+		acc_x()
+		acc_y()			
+		acc_z()
+		velocity_x()
+		velocity_y()			
+		velocity_z()
+		distance_x()
+		distance_y()			
+		distance_z()		
+		
+5) struct spectrometer:
+	//no clue about what is going on here
+
+6) struct battery:
+	Parameters:
+		state_of_charge
+		current
+	functions:
+		safety_check() //ckeck if everything is working alright, return an alarm and shuts down everything in case of trouble
+		
+7) struct linearActuator:
+	parameters:
+		length_feedback //feedback from the linear actuators, via arduino
+	functions:
+		length() //stretch to this particular length
+8) struct servo:
+	similar to servo in arduino, for servos in the end effector						
+			
+9) struct camera: //camera mount, will use parameters from the servo struct
+	parameters:
+		tilt_base //values from the base
+		pan_base
+		tilt_feedback //feedback values from the corresponding servos
+		pan_feedback
+	functions:
+		tilt() //tilt to be given to the camera mount, 
+		pan()
+10) struct sharp: //for the sharp sensors
+	parameters:
+		read //value from the sensor via arduino 
+	functions:
+		distance //convert the value above into distance, need to decide whether this has to be done on the arduino or pi
+						
+for encoders on joints, only values have to be read and no dedicated struct is required
+
+
+Functions to carried out (Threads):
+1) Data aquisition //second highest priority
+2) Navigation (controlling the wheels)
+3) Robotic arm and end effector control
+4) Bio, spectrometer
+5) battery safety //highest priority			

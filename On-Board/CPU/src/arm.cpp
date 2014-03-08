@@ -1,9 +1,9 @@
 /*********************************************************************************************\
 
-Serial API Header for driving a generic serial device on a UNIX machine.
+Robotic Arm Code, MSI-URC 2014
 Rachana Agrawal
 
-1)7 March 2014 : code for 2D arm movement , serial to be edited 
+Log: Refer to header.
 
 \*********************************************************************************************/
 
