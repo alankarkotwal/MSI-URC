@@ -15,39 +15,41 @@ serial_device::serial_device() {
 	fd = -1;
 }
 
-int serial_device::open_port(const char* device) {
-	fd = open(device,  O_RDWR | O_NOCTTY | O_NONBLOCK );
+int serial_device::open_port(const char* device, unsigned int baud_rate) {
+	fd=serialOpen(device, baud_rate);
 }
 
-void serial_device::configure_port(int baud_rate) {
-
-	struct termios options;
-
-    tcgetattr(fd, &options);
-    bzero(&options, sizeof(options));
-
-    cfsetispeed(&options, baud_rate);
-    cfsetospeed(&options, baud_rate);
-
-    options.c_cflag |= (baud_rate|CLOCAL|CREAD|CS8);
-    options.c_iflag |= (IGNPAR|IGNBRK);
-    options.c_cc[VTIME]=0;
-    options.c_cc[VMIN]=1;
-    tcsetattr(fd, TCSANOW, &options);
-}
 
 int serial_device::read_bytes(char* data, int num) {
-	
-	int i = read(fd, data, num);
-	return 0;
+
+	for(int i=0;i<num;i++) {
+		data[i]=serialGetchar(fd);
+		if((int)data[i]==-1) {
+			return 0;
+		}
+	}
+	return 1;
 }
 
-int serial_device::write_bytes(char* buf, ssize_t size) {
-  return write(fd, buf, size);
+int serial_device::write_bytes(char* buf, int size) {
+
+	for(int i=0;i<size;i++) {
+		serialPutchar(fd, buf[i]);
+	}
+}
+
+int serial_device::available() {
+
+	return serialDataAvail(fd);
+}
+
+void serial_device::flush() {
+
+	serialFlush(fd);
 }
 
 int serial_device::close_port() {
-	return close(fd);
+	serialClose(fd);
 }
 
 // The end.

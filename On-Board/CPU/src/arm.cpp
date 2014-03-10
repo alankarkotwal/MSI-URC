@@ -12,7 +12,6 @@ Log: Refer to header.
 #include<math.h>
 
 
-
 //send command to arduino to write to actuators
 void ARM::writeAct(uint8_t act, uint8_t direction, uint8_t pwm)
 {

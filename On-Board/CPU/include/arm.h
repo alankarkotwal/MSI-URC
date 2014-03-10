@@ -7,16 +7,17 @@ Rachana Agrawal
 
 \*********************************************************************************************/
 
-#include<time.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include"serial.h"
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <wiringPi.h>
+#include <wiringSerial.h>
 
 
 class ARM
 {
     public:
-        SFile serial;
+        int serial;
         
         /********constants********/
         

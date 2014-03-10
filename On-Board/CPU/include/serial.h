@@ -16,15 +16,8 @@ Log follows:
 #ifndef _SERIAL_H
 #define _SERIAL_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <termios.h>
-#include <strings.h>
-
+#include <wiringPi.h>
+#include <wiringSerial.h>
 
 class serial_device {
 	int fd;
@@ -32,10 +25,11 @@ class serial_device {
 	public:
 
 	serial_device();
-	int open_port(const char* device);
-	void configure_port(int baud_rate);
+	int open_port(const char* device, unsigned int baud_rate);
 	int read_bytes(char* data, int num);
-	int write_bytes(char* buf, ssize_t size);
+	int write_bytes(char* buf, int size);
+	int available();
+	void flush();
 	int close_port();
 };
 
