@@ -1,9 +1,9 @@
-/************************************************
+/********************************************
  * Main file for running The Final Rover	*
- * Author: Alankar Kotwal			*
- * The Mars Society India			*
- * 11 May 2014, 03:02:35			*
- ************************************************/
+ * Author: Alankar Kotwal					*
+ * The Mars Society India					*
+ * 11 May 2014, 03:02:35					*
+ ********************************************/
 
 #include <iostream>
 #include <cstdio>
@@ -72,7 +72,7 @@ int temp_pwm=0;
 int num;
 int currentActionID, actionIDSize;
 
-serial_device arduino_main, arduino_steer, xbee, arduino_arm;
+serial_device arduino_main, arduino_steer, xbee;
 Decoding decoding;
 Encoding encoding;
 
@@ -115,7 +115,6 @@ void initialize() {
 	arduino_main.open_port(ARDUINO_MAIN_PORT, ARDUINO_MAIN_BAUD);
 	arduino_steer.open_port(ARDUINO_STEER_PORT, ARDUINO_STEER_BAUD);
 	xbee.open_port(XBEE_PORT, XBEE_BAUD);
-	arduino_arm=arduino_steer;
 	delay(1000);
 	#ifdef DEBUG
 	cout<<"\n\n----\n\n";
@@ -133,7 +132,6 @@ void initialize() {
 	#ifdef DEBUG
 	cout<<"Initial analogRead values (divided by 4)"<<endl<<"Depending on the STEERING_MOTORS macro set, this may show less readings."<<endl;
 	#endif
-//	while(1){
 	for(STEERING_MOTORS) {
 		initial_pos[i]=(int)arduino_steer.read();
 		set_pos[i]=initial_pos[i];
@@ -142,13 +140,11 @@ void initialize() {
 		cout<<steer_motors[i]<<": "<<initial_pos[i]<<"\t";
 		#endif
 	}
-	cout<<endl;
-//	}
 	#ifdef DEBUG
 	cout<<"\n\n----\n\n";
 	#endif
 	#ifdef STEER_INIT_VALUES_CODED
-	int temp_pos[]={189, 139, 121, 126};
+	int temp_pos[]={189, 126, 97, 140};
 	for(STEERING_MOTORS) {
 		initial_pos[i]=temp_pos[i];
 		set_pos[i]=temp_pos[i];
@@ -412,8 +408,6 @@ void loop() {
 //			arduino_main.flush();
 		}
 	}
-//
-	delay(50);
 	#ifdef DEBUG
 //	delay(1000);
 	#endif

@@ -1,10 +1,3 @@
-/************************************************
- * Main file for running The Final Rover	*
- * Author: Alankar Kotwal			*
- * The Mars Society India			*
- * 11 May 2014, 03:02:35			*
- ************************************************/
-
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
@@ -72,14 +65,9 @@ int temp_pwm=0;
 int num;
 int currentActionID, actionIDSize;
 
-serial_device arduino_main, arduino_steer, xbee, arduino_arm;
+serial_device arduino_main, arduino_steer, xbee;
 Decoding decoding;
 Encoding encoding;
-
-int gps_data[GPS_LEN];
-
-int camera_yaw_motion=2; 	// 1 is 'left' or 'less'
-int camera_pitch_motion=2; 	// 3 is 'right' or 'more'
 
 void initialize();
 void loop();
@@ -115,7 +103,6 @@ void initialize() {
 	arduino_main.open_port(ARDUINO_MAIN_PORT, ARDUINO_MAIN_BAUD);
 	arduino_steer.open_port(ARDUINO_STEER_PORT, ARDUINO_STEER_BAUD);
 	xbee.open_port(XBEE_PORT, XBEE_BAUD);
-	arduino_arm=arduino_steer;
 	delay(1000);
 	#ifdef DEBUG
 	cout<<"\n\n----\n\n";
@@ -133,7 +120,6 @@ void initialize() {
 	#ifdef DEBUG
 	cout<<"Initial analogRead values (divided by 4)"<<endl<<"Depending on the STEERING_MOTORS macro set, this may show less readings."<<endl;
 	#endif
-//	while(1){
 	for(STEERING_MOTORS) {
 		initial_pos[i]=(int)arduino_steer.read();
 		set_pos[i]=initial_pos[i];
@@ -142,13 +128,11 @@ void initialize() {
 		cout<<steer_motors[i]<<": "<<initial_pos[i]<<"\t";
 		#endif
 	}
-	cout<<endl;
-//	}
 	#ifdef DEBUG
 	cout<<"\n\n----\n\n";
 	#endif
 	#ifdef STEER_INIT_VALUES_CODED
-	int temp_pos[]={189, 139, 121, 126};
+	int temp_pos[]={189, 126, 80, 140};
 	for(STEERING_MOTORS) {
 		initial_pos[i]=temp_pos[i];
 		set_pos[i]=temp_pos[i];
@@ -189,9 +173,6 @@ void initialize() {
 	#ifdef DEBUG
 	cout<<"\n\n----\n\n";
 	#endif
-	for(int i=0;i<GPS_LEN;i++) {
-		gps_data[i]=0;
-	}
 }
 
 void loop() {
@@ -244,45 +225,18 @@ void loop() {
 			decoding.actionDone();
 		}
 		else if(currentActionID==ID_ROBOTIC_ARM) {
-			#ifdef DEBUG
 			cout<<"Robotic Arm X "<<(int)decoding.ROBOTIC_ARM_X<<endl;
 			cout<<"Robotic Arm Y "<<(int)decoding.ROBOTIC_ARM_Y<<endl;
-			cout<<"Robotic Arm D "<<(int)decoding.ROBOTIC_ARM_D<<"\n\n----\n\n";
-			#endif
+			cout<<"Robotic Arm D "<<(int)decoding.ROBOTIC_ARM_D<<endl;
 			decoding.actionDone();
 		}
 		else if(currentActionID==ID_CAMERAS) {
-			#ifdef DEBUG
 			cout<<"Camera Pitch "<<(int)decoding.CAMERAS_MAINCAMERA_PITCH<<endl;
-			cout<<"Camera Yaw "<<(int)decoding.CAMERAS_MAINCAMERA_YAW<<"\n\n----\n\n";
-			#endif
-			if((int)decoding.CAMERAS_MAINCAMERA_PITCH==11) {
-				camera_pitch_motion=1;
-			}
-			else if((int)decoding.CAMERAS_MAINCAMERA_PITCH==19) {
-				camera_pitch_motion=3;
-			}
-			else {
-				camera_pitch_motion=2;
-			}
-			if((int)decoding.CAMERAS_MAINCAMERA_YAW==21) {
-				camera_yaw_motion=1;
-			}
-			else if((int)decoding.CAMERAS_MAINCAMERA_YAW==29) {
-				camera_yaw_motion=3;
-			}
-			else {
-				camera_yaw_motion=2;
-			}
-			#ifdef DEBUG
-			cout<<"Camera Pitch Motion:\t"<<camera_pitch_motion<<"\tCamera Yaw Motion:\t"<<camera_yaw_motion<<"\n\n----\n\n";
-			#endif
+			cout<<"Camera Yaw "<<(int)decoding.CAMERAS_MAINCAMERA_YAW<<endl;
 			decoding.actionDone();
 		}
 		else if(currentActionID==ID_BIO) {
-			#ifdef DEBUG
-			cout<<"Bio\n\n----\n\n";
-			#endif
+			cout<<"Bio"<<endl;
 			decoding.actionDone();
 		}
 		else if(currentActionID==ID_STOPALL) {
@@ -350,8 +304,6 @@ void loop() {
 		temp=(char)drive_dirs[i];
 		arduino_main.write_bytes(&temp, 1);
 	}
-	arduino_main.write_byte((char)camera_pitch_motion);
-	arduino_main.write_byte((char)camera_yaw_motion);
 
 	temp=(char)START_BIT_INT;
 	arduino_steer.write_bytes(&temp, 1);
@@ -379,41 +331,6 @@ void loop() {
 	else {
 		arduino_steer.flush();
 	}
-	if(arduino_main.available()>1+GPS_LEN) {
-		if((int)arduino_main.read()==GPS_IDENTIFIER_INT) {
-			#ifdef DEBUG
-			cout<<"\n\n----\n\nGPS Data:\n\n";
-			#endif
-			for(int i=0;i<GPS_LEN;i++) {
-				gps_data[i]=(int)arduino_main.read();
-				#ifdef DEBUG
-				cout<<gps_data[i]<<"\t";
-				#endif
-			}
-			#ifdef DEBUG
-			cout<<"\n\n----\n\n";
-			#endif
-			encoding.GPS_REGION=gps_data[0];
-			encoding.GPS_LAT_BD=gps_data[1];
-			encoding.GPS_LAT_AD_1=gps_data[2];
-			encoding.GPS_LAT_AD_2=gps_data[3];
-			encoding.GPS_LAT_AD_3=gps_data[4];
-			encoding.GPS_LON_BD=gps_data[5];
-			encoding.GPS_LON_AD_1=gps_data[6];
-			encoding.GPS_LON_AD_2=gps_data[7];
-			encoding.GPS_LON_AD_3=gps_data[8];
-
-			unsigned char GPSdatas[E_SIZE_GPS];
-			encoding.encode(E_ID_GPS, GPSdatas);
-			xbee.write_byte((int)DELIMETER);
-			xbee.write_bytes(GPSdatas, E_SIZE_GPS);
-		}
-		else {
-//			arduino_main.flush();
-		}
-	}
-//
-	delay(50);
 	#ifdef DEBUG
 //	delay(1000);
 	#endif
@@ -435,8 +352,6 @@ void reset() {
 		temp=(char)drive_dirs[i];
 		arduino_main.write_bytes(&temp, 1);
 	}
-	arduino_main.write_byte((char)camera_pitch_motion);
-	arduino_main.write_byte((char)camera_yaw_motion);
 
 	temp=(char)START_BIT_INT;
 	arduino_steer.write_bytes(&temp, 1);
@@ -446,6 +361,7 @@ void reset() {
 		temp=(char)steer_dirs[i];
 		arduino_steer.write_bytes(&temp, 1);
 	}
+
 
 	arduino_main.close_port();
 	arduino_steer.close_port();

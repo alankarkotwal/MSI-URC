@@ -18,16 +18,20 @@ Log follows:
 
 #include <wiringPi.h>
 #include <wiringSerial.h>
+#include <string.h>
+#include <cstring>
 
 class serial_device {
-	int fd;
 
 	public:
-
+	int fd;
+	std::string name;
 	serial_device();
 	int open_port(const char* device, unsigned int baud_rate);
 	int read_bytes(char* data, int num);
+	char read();
 	int write_bytes(char* buf, int size);
+	int write_byte(char data);
 	int available();
 	void flush();
 	int close_port();

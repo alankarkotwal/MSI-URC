@@ -1,0 +1,26 @@
+
+Hello, I am The Final Rover.
+
+----
+
+You're in DEBUG mode. If you do not want to see these messages, disable DEBUG in ./include/config.h and recompile.
+
+----
+
+
+
+----
+
+Serial ports and file descriptors
+
+Main arduino: 	/dev/ttyAMA0	4
+Steer arduino: 	/dev/ttyUSB1	5
+XBee: 		/dev/ttyUSB0	6
+
+----
+
+
+
+----
+
+Shutting down.....
