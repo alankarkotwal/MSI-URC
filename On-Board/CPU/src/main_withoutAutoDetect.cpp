@@ -10,7 +10,6 @@
 #include <cstdlib>
 #include <string.h>
 #include <signal.h>
-#include <string>
 #include "serial.h"
 #include "i2c.h"
 #include "encoding.h"
@@ -110,24 +109,6 @@ int main() {
 
 void initialize() {
 	cout<<"\nHello, I am "<<ROVER_NAME<<".\n\n----\n\n";
-	string main_port("");
-	string xbee_port("");
-	string arm_port("");
-	system("ls /dev | grep AMA > main_port");
-	system("ls /dev | grep ACM > arm_port");
-	system("ls /dev | grep USB > xbee_port");
-	fstream main_fs;
-	fstream xbee_fs;
-	fstream arm_fs;
-	main_fs.open("main_port", fstream::in);
-	main_fs>>main_port;
-	arm_fs.open("arm_port", fstream::in);
-	arm_fs>>arm_port;
-	xbee_fs.open("xbee_port", fstream::in);
-	xbee_fs>>xbee_port;
-	main_port="/dev/"+main_port;
-	arm_port="/dev/"+arm_port;
-	xbee_port="/dev/"+xbee_port;
 	#ifdef DEBUG
 	cout<<"You're in DEBUG mode. If you do not want to see these messages, disable DEBUG in ./include/config.h and recompile.\n\n----\n\n";
 	#endif
@@ -138,20 +119,17 @@ void initialize() {
 	arduino_main.name="Main Arduino";
 	arduino_steer.name="Steering Arduino";
 	xbee.name="XBee";
-//	arduino_main.open_port(ARDUINO_MAIN_PORT, ARDUINO_MAIN_BAUD);
-//	arduino_steer.open_port(ARDUINO_STEER_PORT, ARDUINO_STEER_BAUD);
-//	xbee.open_port(XBEE_PORT, XBEE_BAUD);
-	arduino_main.open_port(main_port, ARDUINO_MAIN_BAUD);
-	arduino_steer.open_port(arm_port, ARDUINO_STEER_BAUD);
-	xbee.open_port(xbee_port, XBEE_BAUD);
+	arduino_main.open_port(ARDUINO_MAIN_PORT, ARDUINO_MAIN_BAUD);
+	arduino_steer.open_port(ARDUINO_STEER_PORT, ARDUINO_STEER_BAUD);
+	xbee.open_port(XBEE_PORT, XBEE_BAUD);
 	//arm_arduino=arduino_steer;
 //	delay(1000);
 	#ifdef DEBUG
 	cout<<"\n\n----\n\n";
 	cout<<"Serial ports and file descriptors\n\n";
-	cout<<"Main arduino: \t"<<main_port<<"\t"<<arduino_main.fd<<endl;
-	cout<<"Steer arduino: \t"<<steer_port<<"\t"<<arduino_steer.fd<<endl;
-	cout<<"XBee: \t\t"<xbee_port<<"\t"<<xbee.fd<<endl;
+	cout<<"Main arduino: \t"<<ARDUINO_MAIN_PORT<<"\t"<<arduino_main.fd<<endl;
+	cout<<"Steer arduino: \t"<<ARDUINO_STEER_PORT<<"\t"<<arduino_steer.fd<<endl;
+	cout<<"XBee: \t\t"<<XBEE_PORT<<"\t"<<xbee.fd<<endl;
 	cout<<"\n----\n\n";
 	#else
 	cout<<"You're not in DEBUG mode, set the DEBUG macro in ./include/config.h and recompile to go in DEBUG mode."<<endl;
