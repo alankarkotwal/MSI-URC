@@ -14,7 +14,7 @@
 
 #define SIZE_ROVER_DRIVE	4
 #define SIZE_STOPALL		2
-#define SIZE_ROBOTIC_ARM 	5
+#define SIZE_ROBOTIC_ARM 	7
 #define SIZE_CAMERAS		4
 #define SIZE_BIO		4
 
@@ -44,6 +44,8 @@ public:
                     ROBOTIC_ARM_Y,
                     ROBOTIC_ARM_D,
                     ROBOTIC_ARM_B,
+                    ROBOTIC_ARM_G1,
+                    ROBOTIC_ARM_G2,
 
                     CAMERAS_MAINCAMERA_PITCH,
                     CAMERAS_MAINCAMERA_YAW;

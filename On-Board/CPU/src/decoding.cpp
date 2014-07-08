@@ -10,6 +10,8 @@ Decoding::Decoding() {
     ROBOTIC_ARM_Y = 0;
     ROBOTIC_ARM_D = 0;
     ROBOTIC_ARM_B = 0;
+    ROBOTIC_ARM_G1 = 0;
+    ROBOTIC_ARM_G2 = 0;
 
     CAMERAS_MAINCAMERA_PITCH = 0;
     CAMERAS_MAINCAMERA_YAW = 0;
@@ -65,6 +67,8 @@ void Decoding::parseIt()
                         ROBOTIC_ARM_Y = dataqueue.at(i+3);
                         ROBOTIC_ARM_D = dataqueue.at(i+4);
                         ROBOTIC_ARM_B = dataqueue.at(i+5);
+                        ROBOTIC_ARM_G1 = dataqueue.at(i+6);
+                        ROBOTIC_ARM_G2 = dataqueue.at(i+7);
                         if(actionIDlist.size()){
                         	if( actionIDlist.at(actionIDlist.size()-1) != ID_ROBOTIC_ARM){
                                 	actionIDlist.push_back(ID_ROBOTIC_ARM);

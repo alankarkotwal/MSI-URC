@@ -10,7 +10,6 @@
 /********constants********/
 
 
-
 class FINAL_ARM
 {
     public:
@@ -43,6 +42,7 @@ float tol_min_1 , tol_min_2 ;
 const char  pot = 'P';
 const uint8_t act1 = 0, act2 = 1, in = 0, out = 1;
 const uint8_t left = 0, right = 1, up = 0, down = 1;
+const uint8_t open = 0, close = 1;
 
 FINAL_ARM()
 {
@@ -85,6 +85,10 @@ void setArm3();
 void base(char dir, int pwm);
 
 void digger(char dir, int pwm);
+
+void gripClaw(char dir, int pwm);
+
+void gripServo(char dir);
 };
 
 

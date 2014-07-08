@@ -15,9 +15,6 @@
 #include "encoding.h"
 #include "decoding.h"
 #include "config.h"
-#include "arm_rpi.h"
-
-FINAL_ARM arm;
 
 #define START_BIT_INT 255
 
@@ -25,8 +22,6 @@ FINAL_ARM arm;
 #define NUMBER_STEERING_MOTORS 4
 #define DRIVE_MOTORS int i=0;i<6;i++
 #define NUMBER_DRIVE_MOTORS 6
-
-//#define ARM_DEBUG
 
 using namespace std;
 
@@ -60,7 +55,7 @@ float speed_ratios[6][11]={	{0.4439560482, 0.473903761, 0.5233922688, 0.60364855
 int initial_pos[4]; //FL, RL, RR, FR
 int present_pos[4];
 int set_pos[4];
-float kp[]={4, 4, 4, 4};
+float kp[]={4, -4, 4, 4};
 
 string driving_motors[]={"FL", "ML", "RL", "RR", "MR", "FR"};
 string steer_motors[]={"FL", "RL", "RR", "FR"};
@@ -77,11 +72,9 @@ int temp_pwm=0;
 int num;
 int currentActionID, actionIDSize;
 
-serial_device arduino_main, xbee;// arduino_steer, arm_arduino;
+serial_device arduino_main, arduino_steer, xbee, arduino_arm;
 Decoding decoding;
 Encoding encoding;
-
-#define arduino_steer arm.arm_arduino
 
 int gps_data[GPS_LEN];
 
@@ -122,8 +115,8 @@ void initialize() {
 	arduino_main.open_port(ARDUINO_MAIN_PORT, ARDUINO_MAIN_BAUD);
 	arduino_steer.open_port(ARDUINO_STEER_PORT, ARDUINO_STEER_BAUD);
 	xbee.open_port(XBEE_PORT, XBEE_BAUD);
-	//arm_arduino=arduino_steer;
-//	delay(1000);
+	arduino_arm=arduino_steer;
+	delay(1000);
 	#ifdef DEBUG
 	cout<<"\n\n----\n\n";
 	cout<<"Serial ports and file descriptors\n\n";
@@ -140,24 +133,21 @@ void initialize() {
 	#ifdef DEBUG
 	cout<<"Initial analogRead values (divided by 4)"<<endl<<"Depending on the STEERING_MOTORS macro set, this may show less readings."<<endl;
 	#endif
-//	while(1){
+//	while(1);
 	for(STEERING_MOTORS) {
 		initial_pos[i]=(int)arduino_steer.read();
-//		initial_pos[i]=0;
 		set_pos[i]=initial_pos[i];
 		steer_pwms[i]=0;
 		#ifdef DEBUG
 		cout<<steer_motors[i]<<": "<<initial_pos[i]<<"\t";
 		#endif
-//		cout<<endl;
 	}
 	cout<<endl;
-//	}
 	#ifdef DEBUG
 	cout<<"\n\n----\n\n";
 	#endif
 	#ifdef STEER_INIT_VALUES_CODED
-	int temp_pos[]={189, 139, 121, 126};
+	int temp_pos[]={189, 98, 103, 126};
 	for(STEERING_MOTORS) {
 		initial_pos[i]=temp_pos[i];
 		set_pos[i]=temp_pos[i];
@@ -169,6 +159,8 @@ void initialize() {
 	}
 	#endif
 	#endif
+	cout<<endl;
+//	while(1);
 	for(DRIVE_MOTORS) {
 		drive_pwms[i]=0;
 	}
@@ -253,73 +245,11 @@ void loop() {
 			decoding.actionDone();
 		}
 		else if(currentActionID==ID_ROBOTIC_ARM) {
-			#ifdef ARM_DEBUG
+			#ifdef DEBUG
 			cout<<"Robotic Arm X "<<(int)decoding.ROBOTIC_ARM_X<<endl;
 			cout<<"Robotic Arm Y "<<(int)decoding.ROBOTIC_ARM_Y<<endl;
-			cout<<"Robotic Arm D "<<(int)decoding.ROBOTIC_ARM_D<<endl;
-			cout<<"Robotic Arm B "<<(int)decoding.ROBOTIC_ARM_B<<endl;
-			cout<<"Robotic Arm G2 "<<(int)decoding.ROBOTIC_ARM_G2<<endl;
-			cout<<"Robotic Arm G1 "<<(int)decoding.ROBOTIC_ARM_G1<<"\n\n----\n\n";
+			cout<<"Robotic Arm D "<<(int)decoding.ROBOTIC_ARM_D<<"\n\n----\n\n";
 			#endif
-			
-			switch(decoding.ROBOTIC_ARM_X)
-			{
-				case 19: arm.writeAct(arm.act1, arm.in, 255);
-					 break;
-				case 11: arm.writeAct(arm.act1, arm.out, 255);
-					 break;
-				case 0:  arm.writeAct(arm.act1, arm.in, 0);
-					 break;
-			}
-			
-			switch(decoding.ROBOTIC_ARM_Y)
-			{
-				case 29: arm.writeAct(arm.act2, arm.in, 255);
-					 break;
-				case 21: arm.writeAct(arm.act2, arm.out, 255);
-					 break;
-				case 0:  arm.writeAct(arm.act2, arm.in, 0);
-					 break;
-			}
-			
-			switch(decoding.ROBOTIC_ARM_D)
-			{
-				case 39: arm.digger(arm.up, 80);
-					 break;
-				case 31: arm.digger(arm.down, 80);
-					 break;
-				case 0:  arm.digger(arm.up, 0);
-					 break;
-			}
-			
-			switch(decoding.ROBOTIC_ARM_B)
-			{
-				case 49: arm.base(arm.left, 120);
-					 break;
-				case 41: arm.base(arm.right, 120);
-					 break;
-				case 0:  arm.base(arm.left, 0);
-					 break;
-			}
-			
-			switch(decoding.ROBOTIC_ARM_G1)
-			{
-				case 59: arm.gripClaw(arm.open, 70);
-					 break;
-				case 51: arm.gripClaw(arm.close,70);
-					 break;
-				case 0:  arm.gripClaw(arm.open, 0);
-					 break;
-			}
-			
-			switch(decoding.ROBOTIC_ARM_G2)
-			{
-				case 69: arm.gripServo(arm.left);
-					 break;
-				case 61: arm.gripServo(arm.right);
-					 break;
-				
-			}
 			decoding.actionDone();
 		}
 		else if(currentActionID==ID_CAMERAS) {
@@ -432,7 +362,6 @@ void loop() {
 		temp=(char)steer_dirs[i];
 		arduino_steer.write_bytes(&temp, 1);
 	}
-	cout<<"Init done"<<endl;
 	while(arduino_steer.available()<NUMBER_STEERING_MOTORS+1);
 	if(arduino_steer.read()==255) {
 		#ifdef DEBUG
@@ -440,7 +369,6 @@ void loop() {
 		#endif
 		for(STEERING_MOTORS) {
 			present_pos[i]=(int)arduino_steer.read();
-			//present_pos[i]=0;
 			#ifdef DEBUG
 			cout<<steer_motors[i]<<": "<<present_pos[i]<<"\t";
 			#endif
@@ -452,8 +380,6 @@ void loop() {
 	else {
 		arduino_steer.flush();
 	}
-
-//	cout<<arduino_main.available()<<endl;
 	if(arduino_main.available()>1+GPS_LEN) {
 		if((int)arduino_main.read()==GPS_IDENTIFIER_INT) {
 			#ifdef DEBUG
@@ -487,7 +413,6 @@ void loop() {
 //			arduino_main.flush();
 		}
 	}
-//
 	delay(50);
 	#ifdef DEBUG
 //	delay(1000);

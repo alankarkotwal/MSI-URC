@@ -13,8 +13,8 @@ serial_device xbee;
 FINAL_ARM arm;
 Encoding encoding;
 Decoding decoding;
-#define Rachana_Debug 1 
-
+#define Rachana_Debug 1
+#define DEBUG
 int num;
 int actionIDSize, currentActionID;
 
@@ -22,10 +22,13 @@ using namespace std;
 
 int main() {
 
-	xbee.open_port("/dev/ttyUSB1", 19200);
+	xbee.open_port("/dev/ttyUSB0", 19200);
 	arm.arm_arduino.open_port("/dev/ttyACM0", 9600);
-
-
+	
+	cout<<"moving actuator...\n";
+	arm.writeAct(arm.act2, arm.in, 255);
+	delay(1000);
+	arm.writeAct(arm.act2, arm.in, 0);
 
 /*	while(1){
 		num = xbee.available();
@@ -47,7 +50,7 @@ int main() {
 	num=xbee.available();
 		if(num) {
 			#ifdef DEBUG
-			cout<<"Input received: \t";
+//			cout<<"Input received: \t";
 			#endif
 			for(int i=0;i<num;i++) {
 				char tempXbee=xbee.read();
@@ -65,8 +68,9 @@ int main() {
 
 		for(int i=0; i<actionIDSize; i++){
 			currentActionID=decoding.getCurrentActionID();
-
+                
 		if(currentActionID==ID_ROBOTIC_ARM) {
+//				cout<<"current action id is robotic arm"<<endl;
 				#if Rachana_Debug
 				cout<<"Robotic Arm X -> "<<(int)decoding.ROBOTIC_ARM_X<<"  :  \t";
 				cout<<"Robotic Arm Y -> "<<(int)decoding.ROBOTIC_ARM_Y<<"  :  \t";
@@ -180,6 +184,6 @@ int main() {
 				}
 
 		}
-		delay(50);
+//		delay(50);
 	}
 }

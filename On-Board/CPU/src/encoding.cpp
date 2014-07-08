@@ -19,6 +19,9 @@ Encoding::Encoding()
     IMU_ROLL = 0;
     IMU_PITCH = 0;
     IMU_HEADING_BH = 0; // IMU_HEADING_BH = heading/2
+//    MAG_X = 0;
+//   MAG_Y = 0;
+//    MAG_Z = 0;
 }
 
 Encoding::~Encoding()
@@ -41,7 +44,10 @@ void Encoding::encode(unsigned char ID, unsigned char* arr)
          GPS_LON_AD_1,
          GPS_LON_AD_2,
          GPS_LON_AD_3,
-         GPS_REGION
+         GPS_REGION,
+//         MAG_X,
+//         MAG_Y,
+//         MAG_Z
         };
         for(int i=0;i<E_SIZE_GPS;i++) {
         	arr[i]=datas1[i];

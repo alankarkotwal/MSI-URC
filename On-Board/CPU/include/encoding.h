@@ -33,6 +33,10 @@ class Encoding
                         IMU_PITCH,
                         IMU_HEADING_BH,
 
+                     /*   MAG_X,
+                        MAG_Y,
+                        MAG_Z,*/
+                        
                         BIO
                         ;
 //*******************************************************

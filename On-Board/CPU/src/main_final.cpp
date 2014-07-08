@@ -26,7 +26,7 @@ FINAL_ARM arm;
 #define DRIVE_MOTORS int i=0;i<6;i++
 #define NUMBER_DRIVE_MOTORS 6
 
-//#define ARM_DEBUG
+#define ARM_DEBUG
 
 using namespace std;
 
@@ -123,7 +123,7 @@ void initialize() {
 	arduino_steer.open_port(ARDUINO_STEER_PORT, ARDUINO_STEER_BAUD);
 	xbee.open_port(XBEE_PORT, XBEE_BAUD);
 	//arm_arduino=arduino_steer;
-//	delay(1000);
+	delay(1000);
 	#ifdef DEBUG
 	cout<<"\n\n----\n\n";
 	cout<<"Serial ports and file descriptors\n\n";
@@ -143,13 +143,11 @@ void initialize() {
 //	while(1){
 	for(STEERING_MOTORS) {
 		initial_pos[i]=(int)arduino_steer.read();
-//		initial_pos[i]=0;
 		set_pos[i]=initial_pos[i];
 		steer_pwms[i]=0;
 		#ifdef DEBUG
 		cout<<steer_motors[i]<<": "<<initial_pos[i]<<"\t";
 		#endif
-//		cout<<endl;
 	}
 	cout<<endl;
 //	}
@@ -432,7 +430,6 @@ void loop() {
 		temp=(char)steer_dirs[i];
 		arduino_steer.write_bytes(&temp, 1);
 	}
-	cout<<"Init done"<<endl;
 	while(arduino_steer.available()<NUMBER_STEERING_MOTORS+1);
 	if(arduino_steer.read()==255) {
 		#ifdef DEBUG
@@ -440,7 +437,6 @@ void loop() {
 		#endif
 		for(STEERING_MOTORS) {
 			present_pos[i]=(int)arduino_steer.read();
-			//present_pos[i]=0;
 			#ifdef DEBUG
 			cout<<steer_motors[i]<<": "<<present_pos[i]<<"\t";
 			#endif
@@ -453,7 +449,7 @@ void loop() {
 		arduino_steer.flush();
 	}
 
-//	cout<<arduino_main.available()<<endl;
+	cout<<arduino_main.available()<<endl;
 	if(arduino_main.available()>1+GPS_LEN) {
 		if((int)arduino_main.read()==GPS_IDENTIFIER_INT) {
 			#ifdef DEBUG

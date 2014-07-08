@@ -342,3 +342,26 @@ void FINAL_ARM::digger(char dir, int pwm)
 	arm_arduino.write_byte((char)pwm);
 	
 }
+
+void FINAL_ARM::gripClaw(char dir, int pwm)
+{
+	uint8_t send = 0;
+	if(dir == close) send = 80;
+	else if(dir == open) send = 160;
+	arm_arduino.write_byte('A');
+        arm_arduino.write_byte((char)send);
+	arm_arduino.write_byte('S');
+	arm_arduino.write_byte((char)pwm);
+	
+}
+
+void FINAL_ARM::gripServo(char dir)
+{
+	uint8_t send = 0;
+	if(dir == left) send = 96;
+	else if(dir == right) send = 146;
+	arm_arduino.write_byte('A');
+        arm_arduino.write_byte((char)send);
+	
+}
+

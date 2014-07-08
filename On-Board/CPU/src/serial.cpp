@@ -21,7 +21,7 @@ int serial_device::open_port(const char* device, unsigned int baud_rate) {
 	if(fd==-1) {
 		std::cout<<"Failed to open serial port "<<device<<std::endl;
 		std::cout<<"Did you connect "<<name<<"?"<<std::endl<<std::endl;
-//		exit(0);
+		exit(0);
 	}
 	serialFlush(fd);
 }
